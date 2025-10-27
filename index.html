@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congo terre de L'art | Plateforme de streaming congolais</title>
+    <!-- NOTE: Vous devez fournir un fichier vidéo local nommé 'local-movie-trailer.mp4' dans le même répertoire. -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(200,16,46,0.9) 0%, rgba(0,56,168,0.9) 100%);
+        }
+        /* Suppression des styles inutiles pour l'icône de lecture au survol */
+        .category-chip {
+            transition: all 0.3s ease;
+        }
+        .category-chip:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Hero Section with Vanta.js Background -->
+    <div id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 hero-gradient opacity-95"></div>
+        <div class="container mx-auto px-6 z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6" data-aos="fade-down">
+                Congo Terre de L'art
+            </h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                Découvrez, soutenez et profitez du meilleur du cinéma et des séries congolais
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
+                <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                    Commencer l'essai gratuit
+                </button>
+                <button class="bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 px-8 py-3 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                    Explorer le catalogue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-gray-900 sticky top-0 z-50 border-b border-gray-800">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-10">
+                    <a href="#" class="text-2xl font-bold text-red-600">Congo terre de l'art</a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="#" class="hover:text-red-500 transition">Accueil</a>
+                        <a href="#" class="hover:text-red-500 transition">Films</a>
+                        <a href="#" class="hover:text-red-500 transition">Séries</a>
+                        <a href="#" class="hover:text-red-500 transition">Artistes</a>
+                        <a href="#" class="hover:text-red-500 transition">À propos</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 rounded-full hover:bg-gray-800">
+                        <i data-feather="search"></i>
+                    </button>
+                    <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full text-sm font-medium">
+                        Connexion
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Trending Section -->
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-3xl font-bold" data-aos="fade-right">Tendances du moment</h2>
+                <a href="#" class="text-red-500 hover:text-red-400 flex items-center" data-aos="fade-left">
+                    Voir plus <i data-feather="chevron-right" class="ml-1"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                
+                <!-- Film Card 1 (Video) -->
+                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up">
+                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/1" controls preload="none">
+                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas l'élément vidéo.
+                    </video>
+                    <div class="p-4 bg-gray-800">
+                        <h3 class="font-semibold">La Cité des Anges</h3>
+                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
+                            <span>2023</span>
+                            <span class="flex items-center">
+                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.5
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Film Card 2 (Video) -->
+                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up" data-aos-delay="100">
+                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/2" controls preload="none">
+                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas l'élément vidéo.
+                    </video>
+                    <div class="p-4 bg-gray-800">
+                        <h3 class="font-semibold">Kinshasa Noir</h3>
+                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
+                            <span>2022</span>
+                            <span class="flex items-center">
+                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.2
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Film Card 3 (Video) -->
+                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up" data-aos-delay="200">
+                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/3" controls preload="none">
+                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas l'élément vidéo.
+                    </video>
+                    <div class="p-4 bg-gray-800">
+                        <h3 class="font-semibold">Mbongo</h3>
+                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
+                            <span>2023</span>
+                            <span class="flex items-center">
+                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.7
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Film Card 4 (Video) -->
+                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up" data-aos-delay="300">
+                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/4" controls preload="none">
+                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas l'élément vidéo.
+                    </video>
+                    <div class="p-4 bg-gray-800">
+                        <h3 class="font-semibold">Les Larmes du Fleuve</h3>
+                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
+                            <span>2021</span>
+                            <span class="flex items-center">
+                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.0
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Film Card 5 (Video) -->
+                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up" data-aos-delay="400">
+                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/5" controls preload="none">
+                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas l'élément vidéo.
+                    </video>
+                    <div class="p-4 bg-gray-800">
+                        <h3 class="font-semibold">Sapeur</h3>
+                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
+                            <span>2022</span>
+                            <span class="flex items-center">
+                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.3
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-16 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-10 text-center" data-aos="fade-down">Parcourir par catégories</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in">
+                    <i data-feather="heart" class="w-8 h-8 mx-auto mb-2"></i>
+                    <span>Romance</span>
+                </div>
+                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="100">
+                    <i data-feather="zap" class="w-8 h-8 mx-auto mb-2"></i>
+                    <span>Action</span>
+                </div>
+                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="200">
+                    <i data-feather="smile" class="w-8 h-8 mx-auto mb-2"></i>
+                    <span>Comédie</span>
+                </div>
+                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="300">
+                    <i data-feather="alert-triangle" class="w-8 h-8 mx-auto mb-2"></i>
+                    <span>Drame</span>
+                </div>
+                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="400">
+                    <i data-feather="eye" class="w-8 h-8 mx-auto mb-2"></i>
+                    <span>Thriller</span>
+                </div>
+                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="500">
+                    <i data-feather="globe" class="w-8 h-8 mx-auto mb-2"></i>
+                    <span>Documentaire</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Releases Section -->
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-3xl font-bold" data-aos="fade-right">Nouvelles sorties</h2>
+                <a href="#" class="text-red-500 hover:text-red-400 flex items-center" data-aos="fade-left">
+                    Voir plus <i data-feather="chevron-right" class="ml-1"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Featured Film 1 (Video) -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden" data-aos="fade-up">
+                    <div class="relative">
+                        <video class="w-full h-64 object-cover" poster="http://static.photos/black/1024x576/6" controls preload="none">
+                            <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas l'élément vidéo.
+                        </video>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <span class="bg-red-600 text-white text-xs px-2 py-1 rounded">Nouveau</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Le Roi de Matonge</h3>
+                        <p class="text-gray-400 mb-4">Un jeune musicien tente de percer dans le quartier animé de Matonge à Kinshasa, mais se retrouve pris dans un réseau criminel.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-400">2023 • 2h15min</span>
+                            <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full text-sm font-medium">
+                                Regarder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Featured Film 2 (Video) -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative">
+                        <video class="w-full h-64 object-cover" poster="http://static.photos/black/1024x576/7" controls preload="none">
+                            <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas l'élément vidéo.
+                        </video>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <span class="bg-red-600 text-white text-xs px-2 py-1 rounded">Nouveau</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Mama Africa</h3>
+                        <p class="text-gray-400 mb-4">L'histoire inspirante d'une femme qui bâtit un empire commercial en partant de rien dans les rues de Lubumbashi.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-400">2023 • 1h50min</span>
+                            <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full text-sm font-medium">
+                                Regarder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Featured Film 3 (Video) -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative">
+                        <video class="w-full h-64 object-cover" poster="http://static.photos/black/1024x576/8" controls preload="none">
+                            <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
+                            Votre navigateur ne supporte pas l'élément vidéo.
+                        </video>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <span class="bg-red-600 text-white text-xs px-2 py-1 rounded">Nouveau</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Bana Kin</h3>
+                        <p class="text-gray-400 mb-4">Une série qui suit la vie de quatre amis d'enfance aux parcours très différents dans la capitale congolaise.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-400">2023 • Saison 1</span>
+                            <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full text-sm font-medium">
+                                Regarder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-r from-blue-900 to-red-900">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold mb-6" data-aos="fade-down">Prêt à découvrir le cinéma congolais ?</h2>
+            <p class="text-xl mb-10 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                Abonnez-vous maintenant et soutenez l'industrie cinématographique locale
+            </p>
+            <button class="bg-white text-gray-900 hover:bg-gray-200 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
+                S'abonner à partir de 5.99€/mois
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-red-600">Ciné Congo</h3>
+                    <p class="text-gray-400">
+                        La première plateforme de streaming dédiée au cinéma et aux séries congolais.
+                    </p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Navigation</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Accueil</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Films</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Séries</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Artistes</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">À propos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Conditions d'utilisation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Politique de confidentialité</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Mentions légales</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="mail" class="w-4 h-4 mr-2"></i> contact@cinecongo.com
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="phone" class="w-4 h-4 mr-2"></i> +243 123 456 789
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i data-feather="map-pin" class="w-4 h-4 mr-2"></i> Kinshasa, RDC
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">
+                <p>© 2023 Ciné Congo. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Vanta.js globe effect
+        VANTA.GLOBE({
+            el: "#hero",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xcc102e,
+            backgroundColor: 0x0,
+            size: 0.8
+        });
+
+        // Initialize AOS and Feather Icons
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
+    </script>
+</body>
+</html>
