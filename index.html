@@ -3,391 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Congo terre de L'art | Plateforme de streaming congolais</title>
-    <!-- NOTE: Vous devez fournir un fichier vidéo local nommé 'local-movie-trailer.mp4' dans le même répertoire. -->
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <title>LeGrandArt - La Plateforme Éthique</title>
+    <!-- Chargement de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0b;
+            color: #f0f0f0;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glow-button {
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.3);
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.5);
+        }
+        .safe-badge {
+            background: linear-gradient(90deg, #059669 0%, #10b981 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            border-color: #eab308;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 20px rgba(234, 179, 8, 0.2);
+        }
+        .art-overlay {
+            background: linear-gradient(to top, rgba(10, 10, 11, 1) 0%, rgba(10, 10, 11, 0) 50%, rgba(10, 10, 11, 0.4) 100%);
+        }
         .hero-gradient {
-            background: linear-gradient(135deg, rgba(200,16,46,0.9) 0%, rgba(0,56,168,0.9) 100%);
+            background: linear-gradient(to right, #000 30%, rgba(0,0,0,0.5) 60%, transparent 100%);
         }
-        /* Suppression des styles inutiles pour l'icône de lecture au survol */
-        .category-chip {
-            transition: all 0.3s ease;
+
+        /* Conteneur Vidéo Vimeo Background */
+        .video-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
         }
-        .category-chip:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        .video-wrapper iframe {
+            width: 100vw;
+            height: 56.25vw; /* Ratio 16:9 */
+            min-height: 100vh;
+            min-width: 177.77vh; /* Ratio 16:9 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .logo-text {
+            letter-spacing: -0.05em;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
-    <!-- Hero Section with Vanta.js Background -->
-    <div id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 hero-gradient opacity-95"></div>
-        <div class="container mx-auto px-6 z-10 text-center">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6" data-aos="fade-down">
-                Congo Terre de L'art
-            </h1>
-            <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                Découvrez, soutenez et profitez du meilleur du cinéma et des séries congolais
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
-                <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105">
-                    Commencer l'essai gratuit
+<body class="min-h-screen">
+
+    <!-- En-tête / Barre de Navigation -->
+    <header class="bg-black/90 backdrop-blur-xl shadow-2xl sticky top-0 z-50 border-b border-white/5">
+        <div class="max-w-[1600px] mx-auto px-6 flex justify-between items-center h-20">
+            
+            <div class="flex items-center space-x-12">
+                <a href="index.html" class="flex flex-col leading-none">
+                    <span class="text-3xl md:text-4xl font-black text-white logo-text">
+                        LeGrand<span class="text-yellow-500">Art</span>
+                    </span>
+                    <span class="text-[9px] uppercase tracking-[0.4em] text-emerald-500 font-black mt-1">Streaming Officiel</span>
+                </a>
+                
+                <nav class="hidden lg:flex space-x-8 text-[11px] uppercase tracking-widest font-black text-gray-400">
+                    <a href="#cinema" class="hover:text-white transition">Cinéma</a>
+                    <a href="#musique" class="hover:text-white transition">Musique</a>
+                    <a href="#arts-plastiques" class="hover:text-white transition">Beaux-Arts</a>
+                </nav>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <button onclick="toggleModal('submit-modal')" class="hidden md:flex items-center bg-yellow-500 hover:bg-yellow-400 text-black text-[11px] font-black uppercase tracking-widest py-3 px-8 rounded-full transition-all duration-300 glow-button transform hover:scale-105">
+                    Proposer mon Art
                 </button>
-                <button class="bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 px-8 py-3 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105">
-                    Explorer le catalogue
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-500 to-yellow-200 p-[2px] cursor-pointer">
+                    <div class="w-full h-full rounded-full bg-black flex items-center justify-center">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section Hero -->
+    <section class="relative h-[90vh] w-full overflow-hidden">
+        <div class="video-wrapper">
+            <iframe src="https://player.vimeo.com/video/336334827?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+        
+        <div class="absolute inset-0 hero-gradient"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-transparent to-[#0a0a0b]/40"></div>
+        
+        <div class="relative max-w-[1600px] mx-auto px-6 h-full flex items-center">
+            <div class="max-w-4xl">
+                <!-- Badge Certifié -->
+                <div class="inline-flex items-center px-4 py-2 rounded-full safe-badge text-white text-[10px] font-bold tracking-[0.2em] mb-10 shadow-2xl border border-emerald-400/30 uppercase">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.604.3 1.166.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    PLATEFORME ÉTHIQUE & SÉCURISÉE
+                </div>
+                
+                <h1 class="text-6xl md:text-8xl font-black mb-8 text-white leading-[0.9] tracking-tighter">
+                    L'Art qui <span class="text-yellow-500 italic">Élève</span>.
+                </h1>
+                <p class="text-2xl text-gray-200 mb-12 leading-relaxed font-medium max-w-2xl bg-black/20 backdrop-blur-md p-6 rounded-3xl border-l-8 border-yellow-500">
+                    Bienvenue sur <span class="text-white font-black underline decoration-yellow-500">LeGrandArt</span>. La seule plateforme de streaming dédiée à l'excellence morale et artistique des 7 Grands Arts.
+                </p>
+                <div class="flex flex-wrap gap-6">
+                    <button class="bg-yellow-500 text-black font-black py-6 px-14 rounded-2xl hover:bg-yellow-400 transition transform hover:scale-105 active:scale-95 shadow-2xl flex items-center text-sm uppercase tracking-widest">
+                        <svg class="w-6 h-6 mr-3 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        Lancer le Streaming
+                    </button>
+                    <button class="bg-white/10 backdrop-blur-2xl text-white font-bold py-6 px-12 rounded-2xl hover:bg-white/20 transition border border-white/10 text-sm uppercase tracking-widest">
+                        Notre Charte de Qualité
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenu Principal -->
+    <main class="py-24 max-w-[1600px] mx-auto px-6">
+        
+        <div id="streaming-content-container" class="space-y-32">
+            <!-- Injecté dynamiquement -->
+        </div>
+
+        <!-- Section Branding Entreprise -->
+        <section class="mt-48 text-center py-20 border-y border-white/5">
+            <h2 class="text-5xl md:text-7xl font-black text-white mb-6 logo-text">LeGrand<span class="text-yellow-500">Art</span></h2>
+            <p class="text-gray-500 text-lg tracking-[0.5em] uppercase font-bold">L'Excellence comme Standard</p>
+        </section>
+
+        <!-- Section Appel Créateurs -->
+        <section class="mt-40 relative rounded-[5rem] overflow-hidden group py-32 px-10 md:px-24">
+            <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=1200" class="absolute inset-0 w-full h-full object-cover opacity-40 transition duration-1000 group-hover:scale-110" alt="Arrière-plan">
+            <div class="absolute inset-0 bg-gradient-to-br from-black via-black/80 to-yellow-900/20"></div>
+            
+            <div class="relative z-10 max-w-3xl">
+                <span class="text-yellow-500 font-black uppercase tracking-[0.5em] text-xs mb-6 block">Rejoignez l'élite</span>
+                <h2 class="text-5xl md:text-7xl font-black text-white mb-10 leading-tight">Protéger le talent, <br><span class="italic text-yellow-500">sauver la culture.</span></h2>
+                <p class="text-gray-300 text-xl mb-14 leading-relaxed font-medium">
+                    Votre art mérite un écrin qui en respecte la pureté. Chez LeGrandArt, nous sélectionnons les œuvres qui participent à l'édification du caractère.
+                </p>
+                <button onclick="toggleModal('submit-modal')" class="bg-white text-black font-black py-6 px-20 rounded-2xl hover:bg-yellow-500 transition-all transform hover:scale-110 active:scale-95 shadow-3xl uppercase tracking-[0.2em] text-sm">
+                    Devenir Artiste Certifié
                 </button>
             </div>
+        </section>
+
+    </main>
+
+    <!-- Modal de Soumission -->
+    <div id="submit-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/98 backdrop-blur-2xl">
+        <div class="bg-zinc-950 border border-white/10 w-full max-w-4xl rounded-[4rem] shadow-3xl p-12 md:p-20 overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-start mb-16">
+                <div>
+                    <h3 class="text-5xl font-black text-white tracking-tighter logo-text">LeGrand<span class="text-yellow-500">Art</span></h3>
+                    <p class="text-emerald-400 text-xs font-bold uppercase tracking-[0.4em] mt-4">Comité de Sélection Éthique</p>
+                </div>
+                <button onclick="toggleModal('submit-modal')" class="p-5 bg-white/5 rounded-full text-gray-500 hover:text-white transition hover:bg-white/10">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form class="space-y-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-2">
+                        <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-1">Identité de l'Artiste</label>
+                        <input type="text" class="w-full bg-white/5 border-b border-white/10 py-5 px-4 text-white outline-none focus:border-yellow-500 transition placeholder:text-gray-700 font-bold rounded-t-xl" placeholder="NOM OU COLLECTIF">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-1">Domaine Artistique</label>
+                        <select class="w-full bg-white/5 border-b border-white/10 py-5 px-4 text-white outline-none focus:border-yellow-500 transition font-bold rounded-t-xl">
+                            <option>7E ART (CINÉMA)</option>
+                            <option>4E ART (MUSIQUE)</option>
+                            <option>3E ART (ARTS PLASTIQUES)</option>
+                            <option>5E ART (LITTÉRATURE)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest ml-1">Source du contenu</label>
+                    <input type="url" class="w-full bg-white/5 border-b border-white/10 py-5 px-4 text-white outline-none focus:border-yellow-500 transition placeholder:text-gray-700 font-bold rounded-t-xl" placeholder="LIEN (VIMEO, PORTFOLIO, ETC.)">
+                </div>
+
+                <div class="bg-emerald-500/5 p-10 rounded-[2.5rem] border border-emerald-500/20 flex items-start space-x-6">
+                    <input type="checkbox" class="w-8 h-8 rounded-lg border-emerald-500 text-emerald-500 bg-black mt-1">
+                    <div class="space-y-2">
+                        <p class="text-sm text-emerald-100 font-black uppercase tracking-wider">Engagement Qualité LeGrandArt</p>
+                        <p class="text-xs text-emerald-100/60 leading-relaxed font-medium">Je certifie que mon contenu est exempt de toute immoralité, violence gratuite ou langage dégradant, conformément aux standards de la plateforme.</p>
+                    </div>
+                </div>
+                
+                <button type="button" onclick="alert('Demande envoyée au comité LeGrandArt. Merci de contribuer à un monde meilleur.')" class="w-full bg-yellow-500 text-black font-black py-7 rounded-3xl hover:bg-yellow-400 transition-all shadow-2xl text-lg uppercase tracking-[0.3em] mt-6">
+                    Soumettre mon Chef-d'œuvre
+                </button>
+            </form>
         </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="bg-gray-900 sticky top-0 z-50 border-b border-gray-800">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-10">
-                    <a href="#" class="text-2xl font-bold text-red-600">Congo terre de l'art</a>
-                    <div class="hidden md:flex space-x-8">
-                        <a href="#" class="hover:text-red-500 transition">Accueil</a>
-                        <a href="#" class="hover:text-red-500 transition">Films</a>
-                        <a href="#" class="hover:text-red-500 transition">Séries</a>
-                        <a href="#" class="hover:text-red-500 transition">Artistes</a>
-                        <a href="#" class="hover:text-red-500 transition">À propos</a>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button class="p-2 rounded-full hover:bg-gray-800">
-                        <i data-feather="search"></i>
-                    </button>
-                    <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full text-sm font-medium">
-                        Connexion
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Trending Section -->
-    <section class="py-16 bg-gray-900">
-        <div class="container mx-auto px-6">
-            <div class="flex justify-between items-center mb-10">
-                <h2 class="text-3xl font-bold" data-aos="fade-right">Tendances du moment</h2>
-                <a href="#" class="text-red-500 hover:text-red-400 flex items-center" data-aos="fade-left">
-                    Voir plus <i data-feather="chevron-right" class="ml-1"></i>
-                </a>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                
-                <!-- Film Card 1 (Video) -->
-                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up">
-                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/1" controls preload="none">
-                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
-                        Votre navigateur ne supporte pas l'élément vidéo.
-                    </video>
-                    <div class="p-4 bg-gray-800">
-                        <h3 class="font-semibold">La Cité des Anges</h3>
-                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
-                            <span>2023</span>
-                            <span class="flex items-center">
-                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.5
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Film Card 2 (Video) -->
-                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up" data-aos-delay="100">
-                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/2" controls preload="none">
-                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
-                        Votre navigateur ne supporte pas l'élément vidéo.
-                    </video>
-                    <div class="p-4 bg-gray-800">
-                        <h3 class="font-semibold">Kinshasa Noir</h3>
-                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
-                            <span>2022</span>
-                            <span class="flex items-center">
-                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.2
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Film Card 3 (Video) -->
-                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up" data-aos-delay="200">
-                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/3" controls preload="none">
-                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
-                        Votre navigateur ne supporte pas l'élément vidéo.
-                    </video>
-                    <div class="p-4 bg-gray-800">
-                        <h3 class="font-semibold">Mbongo</h3>
-                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
-                            <span>2023</span>
-                            <span class="flex items-center">
-                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.7
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Film Card 4 (Video) -->
-                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up" data-aos-delay="300">
-                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/4" controls preload="none">
-                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
-                        Votre navigateur ne supporte pas l'élément vidéo.
-                    </video>
-                    <div class="p-4 bg-gray-800">
-                        <h3 class="font-semibold">Les Larmes du Fleuve</h3>
-                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
-                            <span>2021</span>
-                            <span class="flex items-center">
-                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.0
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Film Card 5 (Video) -->
-                <div class="film-card relative rounded-lg overflow-hidden group" data-aos="fade-up" data-aos-delay="400">
-                    <video class="w-full h-64 object-cover" poster="http://static.photos/black/640x360/5" controls preload="none">
-                        <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
-                        Votre navigateur ne supporte pas l'élément vidéo.
-                    </video>
-                    <div class="p-4 bg-gray-800">
-                        <h3 class="font-semibold">Sapeur</h3>
-                        <div class="flex justify-between items-center mt-2 text-sm text-gray-400">
-                            <span>2022</span>
-                            <span class="flex items-center">
-                                <i data-feather="star" class="w-4 h-4 text-yellow-500 mr-1"></i> 4.3
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section class="py-16 bg-gray-800">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold mb-10 text-center" data-aos="fade-down">Parcourir par catégories</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in">
-                    <i data-feather="heart" class="w-8 h-8 mx-auto mb-2"></i>
-                    <span>Romance</span>
-                </div>
-                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="100">
-                    <i data-feather="zap" class="w-8 h-8 mx-auto mb-2"></i>
-                    <span>Action</span>
-                </div>
-                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="200">
-                    <i data-feather="smile" class="w-8 h-8 mx-auto mb-2"></i>
-                    <span>Comédie</span>
-                </div>
-                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="300">
-                    <i data-feather="alert-triangle" class="w-8 h-8 mx-auto mb-2"></i>
-                    <span>Drame</span>
-                </div>
-                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="400">
-                    <i data-feather="eye" class="w-8 h-8 mx-auto mb-2"></i>
-                    <span>Thriller</span>
-                </div>
-                <div class="category-chip bg-gray-700 hover:bg-red-600 rounded-lg p-4 text-center cursor-pointer" data-aos="zoom-in" data-aos-delay="500">
-                    <i data-feather="globe" class="w-8 h-8 mx-auto mb-2"></i>
-                    <span>Documentaire</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- New Releases Section -->
-    <section class="py-16 bg-gray-900">
-        <div class="container mx-auto px-6">
-            <div class="flex justify-between items-center mb-10">
-                <h2 class="text-3xl font-bold" data-aos="fade-right">Nouvelles sorties</h2>
-                <a href="#" class="text-red-500 hover:text-red-400 flex items-center" data-aos="fade-left">
-                    Voir plus <i data-feather="chevron-right" class="ml-1"></i>
-                </a>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Featured Film 1 (Video) -->
-                <div class="bg-gray-800 rounded-lg overflow-hidden" data-aos="fade-up">
-                    <div class="relative">
-                        <video class="w-full h-64 object-cover" poster="http://static.photos/black/1024x576/6" controls preload="none">
-                            <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
-                            Votre navigateur ne supporte pas l'élément vidéo.
-                        </video>
-                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                            <span class="bg-red-600 text-white text-xs px-2 py-1 rounded">Nouveau</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Le Roi de Matonge</h3>
-                        <p class="text-gray-400 mb-4">Un jeune musicien tente de percer dans le quartier animé de Matonge à Kinshasa, mais se retrouve pris dans un réseau criminel.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-400">2023 • 2h15min</span>
-                            <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full text-sm font-medium">
-                                Regarder
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Featured Film 2 (Video) -->
-                <div class="bg-gray-800 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="100">
-                    <div class="relative">
-                        <video class="w-full h-64 object-cover" poster="http://static.photos/black/1024x576/7" controls preload="none">
-                            <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
-                            Votre navigateur ne supporte pas l'élément vidéo.
-                        </video>
-                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                            <span class="bg-red-600 text-white text-xs px-2 py-1 rounded">Nouveau</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Mama Africa</h3>
-                        <p class="text-gray-400 mb-4">L'histoire inspirante d'une femme qui bâtit un empire commercial en partant de rien dans les rues de Lubumbashi.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-400">2023 • 1h50min</span>
-                            <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full text-sm font-medium">
-                                Regarder
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Featured Film 3 (Video) -->
-                <div class="bg-gray-800 rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="200">
-                    <div class="relative">
-                        <video class="w-full h-64 object-cover" poster="http://static.photos/black/1024x576/8" controls preload="none">
-                            <source src="C:\Users\USER\Desktop\ME\mes sites web\Votre espace de travail/bureau.mp4" type="video/mp4">
-                            Votre navigateur ne supporte pas l'élément vidéo.
-                        </video>
-                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                            <span class="bg-red-600 text-white text-xs px-2 py-1 rounded">Nouveau</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Bana Kin</h3>
-                        <p class="text-gray-400 mb-4">Une série qui suit la vie de quatre amis d'enfance aux parcours très différents dans la capitale congolaise.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-400">2023 • Saison 1</span>
-                            <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full text-sm font-medium">
-                                Regarder
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="py-20 bg-gradient-to-r from-blue-900 to-red-900">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl md:text-5xl font-bold mb-6" data-aos="fade-down">Prêt à découvrir le cinéma congolais ?</h2>
-            <p class="text-xl mb-10 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                Abonnez-vous maintenant et soutenez l'industrie cinématographique locale
+    <footer class="bg-black py-32 border-t border-white/5 mt-40 text-center">
+        <div class="max-w-[1600px] mx-auto px-6">
+            <span class="text-5xl font-black text-white logo-text leading-none">LeGrand<span class="text-yellow-500">Art</span></span>
+            <div class="w-24 h-1 bg-yellow-500 mx-auto mt-6 mb-12"></div>
+            <p class="text-gray-500 text-xl max-w-3xl mx-auto leading-relaxed font-medium mb-20 italic">
+                « Cultiver l'excellence artistique pour protéger la pureté de l'âme et la dignité de chaque individu. »
             </p>
-            <button class="bg-white text-gray-900 hover:bg-gray-200 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
-                S'abonner à partir de 5.99€/mois
-            </button>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 py-12">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4 text-red-600">Ciné Congo</h3>
-                    <p class="text-gray-400">
-                        La première plateforme de streaming dédiée au cinéma et aux séries congolais.
-                    </p>
-                    <div class="flex space-x-4 mt-6">
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i data-feather="facebook"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i data-feather="twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i data-feather="instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i data-feather="youtube"></i>
-                        </a>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Navigation</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Accueil</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Films</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Séries</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Artistes</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">À propos</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Legal</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Conditions d'utilisation</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Politique de confidentialité</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Mentions légales</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
-                    <ul class="space-y-2">
-                        <li class="flex items-center text-gray-400">
-                            <i data-feather="mail" class="w-4 h-4 mr-2"></i> contact@cinecongo.com
-                        </li>
-                        <li class="flex items-center text-gray-400">
-                            <i data-feather="phone" class="w-4 h-4 mr-2"></i> +243 123 456 789
-                        </li>
-                        <li class="flex items-center text-gray-400">
-                            <i data-feather="map-pin" class="w-4 h-4 mr-2"></i> Kinshasa, RDC
-                        </li>
-                    </ul>
-                </div>
+            <div class="flex flex-wrap justify-center gap-16 text-[10px] font-black uppercase tracking-[0.4em] text-gray-700">
+                <a href="#" class="hover:text-white transition">Mentions Légales</a>
+                <a href="#" class="hover:text-white transition">Charte Éthique</a>
+                <a href="#" class="hover:text-white transition">Contact</a>
+                <a href="index.html" class="text-yellow-500 hover:text-white transition flex items-center">
+                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    LEGRANDART.ORG
+                </a>
             </div>
-            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">
-                <p>© 2023 Ciné Congo. Tous droits réservés.</p>
-            </div>
+            <p class="mt-20 text-[9px] text-gray-800 font-black uppercase tracking-[0.8em]">&copy; 2024 LEGRANDART - TOUS DROITS RÉSERVÉS</p>
         </div>
     </footer>
 
     <script>
-        // Initialize Vanta.js globe effect
-        VANTA.GLOBE({
-            el: "#hero",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0xcc102e,
-            backgroundColor: 0x0,
-            size: 0.8
-        });
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.toggle('hidden');
+        }
 
-        // Initialize AOS and Feather Icons
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true
-        });
-        feather.replace();
+        const artsCategories = [
+            { 
+                id: "cinema", 
+                name: "Chef-d'œuvres Cinématographiques", 
+                tagline: "Des récits qui élèvent l'esprit humain",
+                color: "bg-yellow-500", 
+                items: 12,
+                illustration: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=600"
+            },
+            { 
+                id: "musique", 
+                name: "Symphonies & Mélodies", 
+                tagline: "La pureté du son au service de la paix",
+                color: "bg-emerald-500", 
+                items: 12,
+                illustration: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=600"
+            },
+            { 
+                id: "arts-plastiques", 
+                name: "Beaux-Arts & Sculptures", 
+                tagline: "Célébrer la création à travers la forme",
+                color: "bg-blue-500", 
+                items: 12,
+                illustration: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=600"
+            }
+        ];
+
+        const generateCards = (category) => {
+            let cards = "";
+            for(let i=1; i<=category.items; i++) {
+                cards += `
+                    <div class="w-64 md:w-80 flex-shrink-0 cursor-pointer snap-start group card-hover bg-zinc-900 border border-white/5 rounded-[2.5rem] overflow-hidden transition-all duration-700 shadow-2xl relative">
+                        <div class="relative aspect-[3/4]">
+                            <img src="${category.illustration}&sig=${category.id}${i}" 
+                                 class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
+                            <div class="absolute inset-0 art-overlay transition-opacity duration-700 group-hover:opacity-30"></div>
+                            
+                            <!-- Badge Certifié LeGrandArt -->
+                            <div class="absolute top-6 right-6">
+                                <div class="w-10 h-10 bg-emerald-500/95 backdrop-blur rounded-full flex items-center justify-center text-white shadow-2xl border border-white/10">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.604.3 1.166.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="absolute bottom-8 left-8 right-8">
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                                    <p class="text-yellow-500 text-[10px] font-black uppercase tracking-[0.3em]">Qualité Premium</p>
+                                </div>
+                                <h4 class="text-xl font-black text-white group-hover:text-yellow-500 transition duration-300 leading-none">${category.name.split(' ')[0]} #${i}</h4>
+                                <p class="text-gray-400 text-[10px] mt-2 font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">Exclusivité LeGrandArt</p>
+                            </div>
+                            
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 transform scale-50 group-hover:scale-100">
+                                <div class="w-24 h-24 bg-yellow-500/90 rounded-full flex items-center justify-center text-black shadow-glow">
+                                    <svg class="w-12 h-12 fill-current translate-x-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            return cards;
+        };
+
+        const renderSections = () => {
+            const container = document.getElementById('streaming-content-container');
+            if (container) {
+                container.innerHTML = artsCategories.map(cat => `
+                    <section id="${cat.id}">
+                        <div class="flex items-end justify-between mb-12 px-4">
+                            <div class="flex flex-col">
+                                <div class="flex items-center space-x-6 mb-3">
+                                    <div class="w-2 h-10 ${cat.color} rounded-full shadow-2xl"></div>
+                                    <h2 class="text-4xl md:text-6xl font-black text-white tracking-tighter">${cat.name}</h2>
+                                </div>
+                                <p class="text-gray-500 text-sm font-bold uppercase tracking-[0.3em] ml-10">${cat.tagline}</p>
+                            </div>
+                            <button class="hidden md:block text-[10px] font-black text-white border-b-2 border-yellow-500 pb-1 uppercase tracking-[0.4em] hover:text-yellow-500 hover:border-white transition-all">Parcourir la Galerie</button>
+                        </div>
+                        <div class="flex space-x-10 pb-12 overflow-x-auto hide-scrollbar snap-x snap-mandatory px-4">
+                            ${generateCards(cat)}
+                        </div>
+                    </section>
+                `).join('');
+            }
+        };
+
+        window.onload = renderSections;
     </script>
 </body>
 </html>
