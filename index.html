@@ -164,7 +164,7 @@
         </p>
     </footer>
 
-    <!-- Modal Formulaire Enrichi -->
+    <!-- Modal Formulaire -->
     <div id="submit-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/98 backdrop-blur-2xl">
         <div class="bg-zinc-950 border border-white/10 w-full max-w-3xl rounded-[2rem] md:rounded-[3rem] shadow-3xl p-6 md:p-16 overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-8">
@@ -198,7 +198,7 @@
                     </select>
                 </div>
                 <div class="col-span-2">
-                    <label class="text-[9px] font-black uppercase tracking-widest text-gray-500 mb-2 block">Lien de la vidéo / Portfolio (YouTube, Dailymotion, etc.)</label>
+                    <label class="text-[9px] font-black uppercase tracking-widest text-gray-500 mb-2 block">Lien de la vidéo</label>
                     <input type="url" id="form-link" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white outline-none focus:border-yellow-500 text-sm" placeholder="Lien vers votre contenu" required>
                 </div>
                 <div class="col-span-2 mt-4">
@@ -236,12 +236,64 @@
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        function playVideo(containerId, videoId) {
+        // --- GESTION DU COMPTE À REBOURS INVISIBLE ---
+        let countdownTimer = null;
+
+        function startInvisibleCountdown(containerId, thumbUrl) {
+            // 1 minute et 40 secondes = 100 secondes
+            let timeLeft = 100; 
+            
+            // Création d'un témoin quasi invisible (1px)
+            const indicator = document.createElement('div');
+            indicator.id = 'invisible-timer-dot';
+            indicator.style.cssText = "position:absolute; bottom:2px; right:2px; z-index:50; width:1px; height:1px; background:rgba(234,179,8,0.05); pointer-events:none;";
+            document.getElementById(containerId).appendChild(indicator);
+
+            if(countdownTimer) clearInterval(countdownTimer);
+
+            countdownTimer = setInterval(() => {
+                timeLeft--;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    restoreThumbnail(containerId, thumbUrl);
+                }
+            }, 1000);
+        }
+
+        function restoreThumbnail(containerId, thumbUrl) {
             const container = document.getElementById(containerId);
             container.innerHTML = `
-                <iframe src="https://geo.dailymotion.com/player.html?video=${videoId}&autoplay=1&queue-enable=false" 
-                style="width:100%; height:100%; position:absolute; left:0px; top:0px; border:none; border-radius: 2.5rem;" 
-                allow="autoplay; fullscreen; web-share" allowfullscreen></iframe>`;
+                <img src="${thumbUrl}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                <div class="absolute inset-0 art-overlay opacity-80"></div>
+                <button onclick="playVideo('${containerId}', '${thumbUrl}')" class="relative z-10 play-button-overlay w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-3xl transform group-hover:scale-110 transition duration-300">
+                    <svg class="w-8 h-8 md:w-10 md:h-10 text-black fill-current translate-x-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="absolute bottom-8 md:bottom-10 left-6 md:left-8 right-6 md:right-8 z-10">
+                    <span class="text-emerald-400 text-[8px] md:text-[10px] font-black uppercase tracking-widest italic flex items-center">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span> Streaming En Vedette
+                    </span>
+                    <h4 class="text-xl md:text-2xl font-black text-white mt-2 leading-tight tracking-tight">Orchestre Symphonique</h4>
+                </div>
+            `;
+        }
+
+        function playVideo(containerId, thumbUrl) {
+            const container = document.getElementById(containerId);
+            // On remplace le contenu par l'Iframe Dailymotion fournie
+            container.innerHTML = `
+                <div style="position:relative;width:100%;height:100%;overflow:hidden;border-radius:2.5rem;">
+                    <iframe 
+                        src="https://geo.dailymotion.com/player.html?video=kZ1qIW1IoWsp7nF837a&autoplay=1"
+                        style="width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden; border:none;"
+                        allowfullscreen 
+                        title="Dailymotion Video Player"
+                        allow="web-share; autoplay">
+                    </iframe>
+                </div>
+            `;
+            // Lancement du compte à rebours de 1m 40s
+            startInvisibleCountdown(containerId, thumbUrl);
         }
 
         const artsCategories = [
@@ -257,13 +309,10 @@
         const generateCards = (category) => {
             let cards = "";
             for(let i=1; i<=category.items; i++) {
-                // Vidéo en vedette pour la Musique (1ère carte)
                 if(category.id === "musique" && i === 1) {
-                    const videoId = "kZ1qIW1IoWsp7nF837a";
                     const thumb = "https://images.unsplash.com/photo-1576328077645-4b0717208573?auto=format&fit=crop&q=80&w=800&h=1067";
                     cards += `
                     <div class="w-64 md:w-80 flex-shrink-0 snap-start bg-zinc-900 border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl group relative">
-                        <!-- Icone de certification -->
                         <div class="absolute top-6 right-6 z-20 bg-yellow-500 p-1.5 rounded-full shadow-lg border-2 border-black">
                             <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
@@ -272,14 +321,14 @@
                         <div id="video-container-main" class="relative aspect-[3/4] bg-black flex items-center justify-center overflow-hidden">
                             <img src="${thumb}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-1000">
                             <div class="absolute inset-0 art-overlay opacity-80"></div>
-                            <button onclick="playVideo('video-container-main', '${videoId}')" class="relative z-10 play-button-overlay w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-3xl transform group-hover:scale-110 transition duration-300">
+                            <button onclick="playVideo('video-container-main', '${thumb}')" class="relative z-10 play-button-overlay w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-3xl transform group-hover:scale-110 transition duration-300">
                                 <svg class="w-8 h-8 md:w-10 md:h-10 text-black fill-current translate-x-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                             </button>
                             <div class="absolute bottom-8 md:bottom-10 left-6 md:left-8 right-6 md:right-8 z-10">
                                 <span class="text-emerald-400 text-[8px] md:text-[10px] font-black uppercase tracking-widest italic flex items-center">
                                     <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span> Streaming En Vedette
                                 </span>
-                                <h4 class="text-xl md:text-2xl font-black text-white mt-2 leading-tight tracking-tight">Symphonie Élevée</h4>
+                                <h4 class="text-xl md:text-2xl font-black text-white mt-2 leading-tight tracking-tight">Orchestre Symphonique</h4>
                             </div>
                         </div>
                     </div>`;
