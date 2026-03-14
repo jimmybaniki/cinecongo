@@ -162,7 +162,7 @@
         </p>
     </footer>
 
-    <!-- POPUP 1: Présentation & Gains (Design Demandé) -->
+    <!-- POPUP 1: Présentation & Gains -->
     <div id="info-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/98 backdrop-blur-2xl">
         <div class="bg-zinc-950 border border-white/10 w-full max-w-3xl rounded-[2.5rem] md:rounded-[3rem] shadow-3xl p-6 md:p-16 overflow-y-auto max-h-[90vh]">
             <div class="text-center mb-10">
@@ -214,7 +214,7 @@
         </div>
     </div>
 
-    <!-- POPUP 2: Formulaire (Design Demandé) -->
+    <!-- POPUP 2: Formulaire -->
     <div id="submit-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-0 md:p-4 bg-black/98 backdrop-blur-2xl">
         <div class="bg-zinc-950 border-0 md:border md:border-white/10 w-full max-w-4xl h-full md:h-auto md:rounded-[3rem] shadow-3xl p-6 md:p-16 overflow-y-auto">
             <div class="flex justify-between items-center mb-10 pt-8 md:pt-0">
@@ -266,13 +266,15 @@
     </div>
 
     <script>
-        const WHATSAPP_PHONE = "2438150022325";
+        const WHATSAPP_PHONE = "243815022325";
         const TIMER_DURATION_SEC = 100; // 1 min 40 sec
 
         function toggleModal(id) { 
             const el = document.getElementById(id);
-            el.classList.toggle('hidden'); 
-            document.body.style.overflow = el.classList.contains('hidden') ? 'auto' : 'hidden';
+            if (el) {
+                el.classList.toggle('hidden'); 
+                document.body.style.overflow = el.classList.contains('hidden') ? 'auto' : 'hidden';
+            }
         }
 
         function sendToWhatsApp() {
@@ -306,9 +308,9 @@
             window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // --- GESTION DU RETOUR À LA PHOTO ---
         function restoreThumbnail(containerId, thumbUrl) {
             const container = document.getElementById(containerId);
+            if (!container) return;
             container.innerHTML = `
                 <img src="${thumbUrl}" class="absolute inset-0 w-full h-full object-cover transition duration-1000 group-hover:scale-110">
                 <div class="absolute inset-0 art-overlay opacity-80"></div>
@@ -327,16 +329,15 @@
 
         function playVideo(containerId, thumbUrl) {
             const container = document.getElementById(containerId);
-            container.innerHTML = `<div style="position:relative;width:100%;height:100%;overflow:hidden;border-radius:2.5rem;"><iframe id="dm-player-live" src="https://geo.dailymotion.com/player.html?video=kZ1qIW1IoWsp7nF837a&autoplay=1" style="width:100%; height:100%; position:absolute; left:0px; top:0px; border:none;" allowfullscreen allow="autoplay"></iframe></div>`;
+            if (!container) return;
+            container.innerHTML = `<div style="position:relative;width:100%;height:100%;overflow:hidden;border-radius:2.5rem;"><iframe src="https://geo.dailymotion.com/player.html?video=kZ1qIW1IoWsp7nF837a&autoplay=1" style="width:100%; height:100%; position:absolute; left:0px; top:0px; border:none;" allowfullscreen allow="autoplay"></iframe></div>`;
             container.className = "relative aspect-[3/4] bg-black";
 
-            // Timer invisible de 1m40
             setTimeout(() => {
                 restoreThumbnail(containerId, thumbUrl);
             }, TIMER_DURATION_SEC * 1000);
         }
 
-        // --- GÉNÉRATION ---
         const artsCategories = [
             { id: "archi", name: "1. Architecture", color: "bg-orange-500", illustration: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&q=80&w=800" },
             { id: "sculpt", name: "2. Sculpture", color: "bg-stone-500", illustration: "https://images.unsplash.com/photo-1554188248-986adbb73be4?auto=format&fit=crop&q=80&w=800" },
@@ -349,6 +350,7 @@
 
         const renderSections = () => {
             const container = document.getElementById('streaming-content-container');
+            if (!container) return;
             container.innerHTML = artsCategories.map(cat => `
                 <section>
                     <div class="flex items-center space-x-6 mb-12 px-4">
