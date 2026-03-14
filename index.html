@@ -174,7 +174,6 @@
             </div>
 
             <div class="grid grid-cols-1 gap-6 mb-12">
-                <!-- Mécénat -->
                 <div class="bg-white/5 p-6 rounded-2xl border border-white/5 flex gap-6">
                     <div class="w-12 h-12 flex-shrink-0 bg-yellow-500 rounded-xl flex items-center justify-center text-black">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zM12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"></path></svg>
@@ -184,7 +183,6 @@
                         <p class="text-xs text-gray-400 leading-relaxed">Vos fans vous envoient des pourboires (Libala) directement via M-Pesa ou Airtel Money. Nous retenons 40% de frais de service pour la gestion.</p>
                     </div>
                 </div>
-                <!-- Performance -->
                 <div class="bg-white/5 p-6 rounded-2xl border border-white/5 flex gap-6">
                     <div class="w-12 h-12 flex-shrink-0 bg-emerald-500 rounded-xl flex items-center justify-center text-black">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -194,7 +192,6 @@
                         <p class="text-xs text-gray-400 leading-relaxed">Un bouton "Engager cet Artiste" permet aux organisateurs d'événements de vous recruter. LeGrandArt sécurise la transaction.</p>
                     </div>
                 </div>
-                <!-- Licences -->
                 <div class="bg-white/5 p-6 rounded-2xl border border-white/5 flex gap-6">
                     <div class="w-12 h-12 flex-shrink-0 bg-blue-500 rounded-xl flex items-center justify-center text-black">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
@@ -265,9 +262,46 @@
         </div>
     </div>
 
+    <!-- POPUP 3: Options de Soutien -->
+    <div id="support-modal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4 bg-black/95 backdrop-blur-3xl">
+        <div class="bg-zinc-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] p-8 md:p-12 shadow-3xl text-center overflow-y-auto max-h-[95vh]">
+            <h3 class="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">Comment souhaitez-vous <br><span class="text-yellow-500">soutenir cet Artiste ?</span></h3>
+            <p id="support-item-code" class="text-emerald-500 font-bold text-xs tracking-widest uppercase mb-8">Soutien pour l'œuvre : #CODE</p>
+            
+            <div class="space-y-4 mb-10 text-left">
+                <!-- Prestige -->
+                <button onclick="sendSupport('Soutien de Prestige (500$)', 'Un don direct pour propulser la production.')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all">
+                    <h4 class="text-white group-hover:text-black font-black text-sm uppercase">Soutien de Prestige (500$)</h4>
+                    <p class="text-gray-400 group-hover:text-black/70 text-[10px]">Un apport direct pour propulser la production de l'artiste.</p>
+                </button>
+                
+                <!-- Tech -->
+                <button onclick="sendSupport('Don Technologique', 'Fourniture de laptops, tablettes ou équipements.')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all">
+                    <h4 class="text-white group-hover:text-black font-black text-sm uppercase">Don Technologique</h4>
+                    <p class="text-gray-400 group-hover:text-black/70 text-[10px]">Fourniture de laptops, tablettes graphiques ou équipements.</p>
+                </button>
+
+                <!-- Ambassadeur -->
+                <button onclick="sendSupport('Partenariat Ambassadeur', 'Soutenir l\'artiste en faisant de lui l\'égérie d\'une marque.')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all">
+                    <h4 class="text-white group-hover:text-black font-black text-sm uppercase">Partenariat Ambassadeur</h4>
+                    <p class="text-gray-400 group-hover:text-black/70 text-[10px]">L'artiste devient l'égérie de votre marque pour vos campagnes.</p>
+                </button>
+
+                <!-- Gala -->
+                <button onclick="sendSupport('Financement Gala', 'Financement d\'une performance lors d\'une soirée.')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all">
+                    <h4 class="text-white group-hover:text-black font-black text-sm uppercase">Gala & Réseautage</h4>
+                    <p class="text-gray-400 group-hover:text-black/70 text-[10px]">Financer une performance lors d'une soirée de haut standing.</p>
+                </button>
+            </div>
+
+            <button onclick="toggleModal('support-modal')" class="text-gray-500 hover:text-white font-black uppercase tracking-widest text-[10px]">Annuler</button>
+        </div>
+    </div>
+
     <script>
         const WHATSAPP_PHONE = "243815022325";
-        const TIMER_DURATION_SEC = 100; // 1 min 40 sec
+        const TIMER_DURATION_SEC = 100; 
+        let currentSupportCode = "";
 
         function toggleModal(id) { 
             const el = document.getElementById(id);
@@ -297,13 +331,19 @@
             window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        function supportArtist(catName, itemIndex) {
-            const code = `${catName.substring(0,3).toUpperCase()}-${itemIndex}`;
+        function openSupportModal(catName, itemIndex) {
+            currentSupportCode = `${catName.substring(0,3).toUpperCase()}-${itemIndex}`;
+            const label = document.getElementById('support-item-code');
+            if(label) label.innerText = `Soutien pour l'œuvre : #${currentSupportCode}`;
+            toggleModal('support-modal');
+        }
+
+        function sendSupport(type, desc) {
             const message = `*SOUTIEN ARTISTIQUE LEGRANDART*\n\n` +
-                            `Je souhaite soutenir l'œuvre :\n` +
-                            `*Catégorie:* ${catName}\n` +
-                            `*Code:* #${code}\n\n` +
-                            `_Veuillez m'indiquer comment envoyer mon don via Mobile Money._`;
+                            `*Œuvre:* #${currentSupportCode}\n` +
+                            `*Type de don/soutien:* ${type}\n` +
+                            `*Détail:* ${desc}\n\n` +
+                            `_Je souhaite obtenir les modalités pour finaliser ce don._`;
             
             window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
         }
@@ -390,8 +430,8 @@
                                             <button class="bg-white/10 hover:bg-yellow-500 text-black/0 hover:text-black p-3 rounded-xl transition-all">
                                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                             </button>
-                                            <button onclick="supportArtist('${cat.name}', ${i})" class="flex-grow bg-emerald-500/10 hover:bg-emerald-500 text-emerald-500 hover:text-black text-[10px] font-black uppercase tracking-widest py-3 rounded-xl border border-emerald-500/20 transition-all">
-                                                Soutenir ($)
+                                            <button onclick="openSupportModal('${cat.name}', ${i})" class="flex-grow bg-emerald-500/10 hover:bg-emerald-500 text-emerald-500 hover:text-black text-[10px] font-black uppercase tracking-widest py-3 rounded-xl border border-emerald-500/20 transition-all">
+                                                Soutenir cet art
                                             </button>
                                         </div>
                                     </div>
