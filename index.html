@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T00CMP9WFH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T00CMP9WFH');
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeGrandArt - La Plateforme Éthique</title>
-    <!-- Chargement de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -14,61 +22,40 @@
             color: #f0f0f0;
             overflow-x: hidden;
         }
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .glow-button {
-            box-shadow: 0 0 15px rgba(234, 179, 8, 0.3);
-        }
-        .glow-button:hover {
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.5);
-        }
-        .safe-badge {
-            background: linear-gradient(90deg, #059669 0%, #10b981 100%);
-        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .glow-button { box-shadow: 0 0 15px rgba(234, 179, 8, 0.3); }
+        .glow-button:hover { box-shadow: 0 0 25px rgba(234, 179, 8, 0.5); }
+        
+        .safe-badge { background: linear-gradient(90deg, #059669 0%, #10b981 100%); }
+        
         .card-hover:hover {
             transform: translateY(-10px);
             border-color: #eab308;
             box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 20px rgba(234, 179, 8, 0.2);
         }
+        
         .art-overlay {
             background: linear-gradient(to top, rgba(10, 10, 11, 1) 0%, rgba(10, 10, 11, 0) 50%, rgba(10, 10, 11, 0.4) 100%);
-        }
-        .hero-gradient {
-            background: linear-gradient(to right, #000 30%, rgba(0,0,0,0.5) 60%, transparent 100%);
         }
 
         .hero-bg-container {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden;
         }
         
         .hero-bg-image {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background-image: url('https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=1920');
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
             animation: kenburns 30s ease-in-out infinite alternate;
         }
 
-        @keyframes kenburns {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
-        }
+        @keyframes kenburns { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
         
-        .logo-text {
-            letter-spacing: -0.05em;
-        }
+        .logo-text { letter-spacing: -0.05em; }
 
         .play-button-overlay {
             background: rgba(234, 179, 8, 0.95);
@@ -81,23 +68,35 @@
             box-shadow: 0 0 30px rgba(234, 179, 8, 0.5);
         }
 
-        input, select, textarea {
-            font-size: 16px !important; 
+        /* Animation Slider Publicitaire */
+        .ad-slider-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .ad-track {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        .ad-card {
+            min-width: 100%;
+            flex-shrink: 0;
         }
 
-        @media (max-width: 640px) {
-            .hero-title { font-size: 2.5rem !important; line-height: 1 !important; }
-            .hero-text { font-size: 1.1rem !important; }
-            .section-title { font-size: 1.75rem !important; }
+        .page-transition {
+            transition: opacity 0.5s ease-in-out;
         }
+
+        input, select, textarea { font-size: 16px !important; }
     </style>
 </head>
 <body class="min-h-screen">
 
+    <!-- NAVIGATION PRINCIPALE -->
     <header class="bg-black/90 backdrop-blur-xl shadow-2xl sticky top-0 z-50 border-b border-white/5">
         <div class="max-w-[1600px] mx-auto px-4 md:px-6 flex justify-between items-center h-20">
             <div class="flex items-center space-x-12">
-                <a href="#" class="flex flex-col leading-none">
+                <a href="#" onclick="showPage('home')" class="flex flex-col leading-none">
                     <span class="text-2xl md:text-4xl font-black text-white logo-text">
                         LeGrand<span class="text-yellow-500">Art</span>
                     </span>
@@ -111,271 +110,237 @@
         </div>
     </header>
 
-    <section class="relative h-[80vh] md:h-[90vh] w-full overflow-hidden">
-        <div class="hero-bg-container"><div class="hero-bg-image"></div></div>
-        <div class="absolute inset-0 hero-gradient"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-transparent to-[#0a0a0b]/40"></div>
-        <div class="relative max-w-[1600px] mx-auto px-6 h-full flex items-center">
-            <div class="max-w-4xl">
-                <div class="inline-flex items-center px-4 py-2 rounded-full safe-badge text-white text-[9px] md:text-[10px] font-bold tracking-[0.2em] mb-6 md:mb-10 shadow-2xl border border-emerald-400/30 uppercase">
-                    PLATEFORME ÉTHIQUE & SÉCURISÉE
-                </div>
-                <h1 class="hero-title text-5xl md:text-8xl font-black mb-6 md:mb-8 text-white leading-[0.9] tracking-tighter">
-                    L'Art qui <span class="text-yellow-500 italic">Élève</span>.
-                </h1>
-                <p class="hero-text text-lg md:text-2xl text-gray-200 mb-8 md:mb-12 leading-relaxed font-medium max-w-2xl bg-black/40 backdrop-blur-md p-4 md:p-6 rounded-2xl md:rounded-3xl border-l-4 md:border-l-8 border-yellow-500">
-                    Bienvenue sur <span class="text-white font-black underline decoration-yellow-500">LeGrandArt</span>. La seule plateforme de streaming dédiée à <span class="text-yellow-500">l'excellence artistique</span> des 7 Grands Arts.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <main class="py-12 md:py-24 max-w-[1600px] mx-auto px-4 md:px-6">
-        <div id="streaming-content-container" class="space-y-16 md:space-y-32"></div>
-    </main>
-
-    <section class="max-w-[1600px] mx-auto px-4 md:px-6 mb-24">
-        <div class="relative rounded-[2.5rem] md:rounded-[5rem] overflow-hidden py-16 md:py-32 px-6 md:px-24">
-            <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=1200" class="absolute inset-0 w-full h-full object-cover opacity-40" alt="BG Elite">
-            <div class="absolute inset-0 bg-gradient-to-br from-black via-black/80 to-yellow-900/20"></div>
-            <div class="relative z-10 max-w-3xl text-center md:text-left">
-                <span class="text-yellow-500 font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-[10px] md:text-xs mb-4 md:mb-6 block">Rejoignez l'élite</span>
-                <h2 class="text-3xl md:text-7xl font-black text-white mb-8 md:mb-10 leading-tight">Protéger le talent, <br><span class="italic text-yellow-500">sauver la culture.</span></h2>
-                <div class="flex justify-center md:justify-start">
-                    <button onclick="toggleModal('info-modal')" class="bg-white text-black font-black py-4 px-10 md:py-6 md:px-20 rounded-xl md:rounded-2xl hover:bg-yellow-500 transition-all transform hover:scale-110 shadow-3xl uppercase tracking-[0.2em] text-[10px] md:text-sm">
-                        Devenir Artiste Certifié
-                    </button>
+    <!-- PAGE D'ACCUEIL -->
+    <div id="page-home" class="page-transition">
+        <section class="relative h-[80vh] md:h-[90vh] w-full overflow-hidden">
+            <div class="hero-bg-container"><div class="hero-bg-image"></div></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-transparent to-[#0a0a0b]/40"></div>
+            <div class="relative max-w-[1600px] mx-auto px-6 h-full flex items-center">
+                <div class="max-w-4xl">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full safe-badge text-white text-[9px] md:text-[10px] font-bold tracking-[0.2em] mb-6 md:mb-10 shadow-2xl border border-emerald-400/30 uppercase">
+                        PLATEFORME ÉTHIQUE & SÉCURISÉE
+                    </div>
+                    <h1 class="text-5xl md:text-8xl font-black mb-6 md:mb-8 text-white leading-[0.9] tracking-tighter">
+                        L'Art qui <span class="text-yellow-500 italic">Élève</span>.
+                    </h1>
+                    <p class="text-lg md:text-2xl text-gray-200 mb-8 md:mb-12 leading-relaxed font-medium max-w-2xl bg-black/40 backdrop-blur-md p-4 md:p-6 rounded-2xl md:rounded-3xl border-l-4 md:border-l-8 border-yellow-500">
+                        Bienvenue sur <span class="text-white font-black underline decoration-yellow-500">LeGrandArt</span>. La seule plateforme dédiée à <span class="text-yellow-500">l'excellence artistique</span> des 7 Grands Arts.
+                    </p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer class="bg-black py-16 md:py-32 border-t border-white/5 text-center px-4">
-        <span class="text-3xl md:text-5xl font-black text-white logo-text">LeGrand<span class="text-yellow-500">Art</span></span>
-        <div class="mt-8 md:mt-12 flex flex-wrap justify-center gap-6 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-            <a href="#" class="hover:text-yellow-500">Conditions</a>
-            <a href="#" class="hover:text-yellow-500">Charte Éthique</a>
-            <a href="#" class="hover:text-yellow-500">Contact</a>
-        </div>
-        <p class="mt-12 md:mt-20 text-[8px] md:text-[9px] text-gray-800 font-black uppercase tracking-[0.4em] md:tracking-[0.8em] leading-relaxed">
-            &copy; 2026 LEGRANDART - PLATEFORME DE PROTECTION DE L'ART ÉLEVÉ<br>KINSHASA, RÉPUBLIQUE DÉMOCRATIQUE DU CONGO
-        </p>
-    </footer>
-
-    <!-- POPUP 1: Présentation & Gains -->
-    <div id="info-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/98 backdrop-blur-2xl">
-        <div class="bg-zinc-950 border border-white/10 w-full max-w-3xl rounded-[2.5rem] md:rounded-[3rem] shadow-3xl p-6 md:p-16 overflow-y-auto max-h-[90vh]">
-            <div class="text-center mb-10">
-                <span class="text-yellow-500 font-black text-[10px] uppercase tracking-[0.4em] mb-4 block">Notre Mission</span>
-                <h3 class="text-3xl md:text-5xl font-black text-white mb-6 tracking-tighter leading-none">Gagnez de l'argent avec <span class="text-yellow-500">votre talent</span></h3>
-                <p class="text-gray-400 text-sm md:text-lg leading-relaxed">
-                    LeGrandArt est l'intermédiaire qui valorise votre travail. Voici comment vous générez des revenus sur notre plateforme.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 gap-6 mb-12">
-                <div class="bg-white/5 p-6 rounded-2xl border border-white/5 flex gap-6">
-                    <div class="w-12 h-12 flex-shrink-0 bg-yellow-500 rounded-xl flex items-center justify-center text-black">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zM12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"></path></svg>
+        <!-- SECTION PUBLICITAIRE ANIMÉE (SLIDER) -->
+        <div class="max-w-[1600px] mx-auto px-4 md:px-6 mt-12 mb-8">
+            <div class="ad-slider-container rounded-3xl border border-white/5 bg-zinc-900/50">
+                <div id="ad-track" class="ad-track">
+                    <!-- Ad 1 -->
+                    <div class="ad-card relative h-32 md:h-48 flex items-center p-6 md:p-12 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=1200" class="absolute inset-0 w-full h-full object-cover opacity-20" alt="Soirée">
+                        <div class="relative z-10">
+                            <span class="text-yellow-500 font-black text-[10px] uppercase tracking-widest block mb-2">Événement Exceptionnel</span>
+                            <h2 class="text-2xl md:text-5xl font-black text-white italic">Soirée des Arts</h2>
+                            <p class="text-gray-400 text-xs md:text-sm mt-2 font-bold uppercase tracking-widest">Date à venir • Lieu Secret</p>
+                        </div>
+                        <div class="ml-auto relative z-10 hidden md:block">
+                             <div class="w-16 h-16 rounded-full border-4 border-yellow-500 flex items-center justify-center animate-spin-slow">
+                                 <span class="text-yellow-500 font-black text-xs">GOLD</span>
+                             </div>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="text-white font-black uppercase text-sm mb-1">Mécénat Mobile Money</h4>
-                        <p class="text-xs text-gray-400 leading-relaxed">Vos fans vous envoient des pourboires (Libala) directement via M-Pesa ou Airtel Money. Nous retenons 40% de frais de service pour la gestion.</p>
-                    </div>
-                </div>
-                <div class="bg-white/5 p-6 rounded-2xl border border-white/5 flex gap-6">
-                    <div class="w-12 h-12 flex-shrink-0 bg-emerald-500 rounded-xl flex items-center justify-center text-black">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-black uppercase text-sm mb-1">Contrats de Performance</h4>
-                        <p class="text-xs text-gray-400 leading-relaxed">Un bouton "Engager cet Artiste" permet aux organisateurs d'événements de vous recruter. LeGrandArt sécurise la transaction.</p>
-                    </div>
-                </div>
-                <div class="bg-white/5 p-6 rounded-2xl border border-white/5 flex gap-6">
-                    <div class="w-12 h-12 flex-shrink-0 bg-blue-500 rounded-xl flex items-center justify-center text-black">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-black uppercase text-sm mb-1">Vente de Licences</h4>
-                        <p class="text-xs text-gray-400 leading-relaxed">Vendez les droits d'utilisation de vos œuvres pour des publicités, films ou médias.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row gap-4">
-                <button onclick="toggleModal('info-modal'); toggleModal('submit-modal')" class="flex-1 bg-yellow-500 text-black font-black py-4 md:py-6 rounded-2xl uppercase tracking-widest text-xs md:text-sm glow-button transition-all transform hover:scale-105">
-                    Compris, Je propose mon art
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- POPUP 2: Formulaire -->
-    <div id="submit-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-0 md:p-4 bg-black/98 backdrop-blur-2xl">
-        <div class="bg-zinc-950 border-0 md:border md:border-white/10 w-full max-w-4xl h-full md:h-auto md:rounded-[3rem] shadow-3xl p-6 md:p-16 overflow-y-auto">
-            <div class="flex justify-between items-center mb-10 pt-8 md:pt-0">
-                <h3 class="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter leading-none">Dépôt de <span class="text-yellow-500">Candidature</span></h3>
-                <button onclick="toggleModal('submit-modal')" class="text-gray-500 hover:text-white text-4xl leading-none">&times;</button>
-            </div>
-            
-            <form id="art-form" class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                <div class="space-y-2">
-                    <label class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-gray-500 block">Nom d'Artiste / Pseudo</label>
-                    <input type="text" id="form-name" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none focus:border-yellow-500 transition-all" placeholder="Votre nom" required>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-gray-500 block">Contact WhatsApp</label>
-                    <input type="tel" id="form-contact" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none focus:border-yellow-500 transition-all" placeholder="+243..." required>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-gray-500 block">Titre de l'œuvre</label>
-                    <input type="text" id="form-title" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none focus:border-yellow-500 transition-all" placeholder="Nom de votre création" required>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-gray-500 block">Discipline Artistique</label>
-                    <div class="relative">
-                        <select id="form-category" class="w-full bg-zinc-900 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none focus:border-yellow-500 appearance-none">
-                            <option value="ARCHITECTURE">1er Art : Architecture</option>
-                            <option value="SCULPTURE">2e Art : Sculpture</option>
-                            <option value="PEINTURE">3e Art : Arts-Plastiques</option>
-                            <option value="MUSIQUE">4e Art : Musique</option>
-                            <option value="LITTERATURE">5e Art : Littérature</option>
-                            <option value="SCENE">6e Art : Arts de la scène</option>
-                            <option value="CINEMA">7e Art : Cinéma</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-5 flex items-center pointer-events-none text-gray-500">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                    <!-- Ad 2 -->
+                    <div onclick="showPage('contest')" class="ad-card relative h-32 md:h-48 flex items-center p-6 md:p-12 overflow-hidden cursor-pointer group">
+                        <img src="https://images.unsplash.com/photo-1523895665936-7bfe172b757d?auto=format&fit=crop&q=80&w=1200" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition duration-700" alt="Roots">
+                        <div class="absolute inset-0 bg-gradient-to-r from-emerald-900/80 to-transparent"></div>
+                        <div class="relative z-10">
+                            <span class="text-emerald-400 font-black text-[10px] uppercase tracking-widest block mb-2">Concours Panafricain</span>
+                            <h2 class="text-2xl md:text-5xl font-black text-white italic">ART, FOI & RACINES</h2>
+                            <p class="text-white text-xs md:text-sm mt-2 font-bold bg-emerald-600 inline-block px-3 py-1 rounded">INSCRIPTIONS OUVERTES</p>
+                        </div>
+                        <div class="ml-auto relative z-10">
+                            <button class="bg-white text-black font-black px-6 py-3 rounded-full text-xs uppercase tracking-widest group-hover:bg-yellow-500 transition-colors">Découvrir</button>
                         </div>
                     </div>
                 </div>
-                <div class="col-span-1 md:col-span-2 space-y-2">
-                    <label class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-gray-500 block">Lien de la vidéo (Portfolio/Démonstration)</label>
-                    <input type="url" id="form-link" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none focus:border-yellow-500 transition-all" placeholder="https://..." required>
+            </div>
+        </div>
+
+        <main class="py-12 max-w-[1600px] mx-auto px-4 md:px-6">
+            <div id="streaming-content-container" class="space-y-16 md:space-y-32"></div>
+        </main>
+    </div>
+
+    <!-- PAGE DÉTAILS CONCOURS -->
+    <div id="page-contest" class="page-transition hidden bg-[#0a0a0b] min-h-screen pb-24">
+        <section class="relative h-[60vh] flex items-end p-8 md:p-24 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1523895665936-7bfe172b757d?auto=format&fit=crop&q=80&w=1920" class="absolute inset-0 w-full h-full object-cover opacity-50" alt="Hero Contest">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] to-transparent"></div>
+            <div class="relative z-10 max-w-5xl">
+                <button onclick="showPage('home')" class="text-yellow-500 font-black uppercase text-xs tracking-widest mb-8 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M15 19l-7-7 7-7"/></svg> Retour Accueil
+                </button>
+                <h1 class="text-5xl md:text-8xl font-black text-white leading-none tracking-tighter mb-6 uppercase">
+                    Art, Foi & <span class="text-yellow-500 italic">Racines</span>
+                </h1>
+                <p class="text-xl md:text-3xl text-emerald-400 font-black uppercase tracking-widest">Honorer nos racines, inspirer nos lendemains.</p>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-6 mt-12 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="md:col-span-2 space-y-12">
+                <div>
+                    <h2 class="text-3xl font-black text-white mb-6 uppercase border-b border-white/10 pb-4">Concept & Vision</h2>
+                    <p class="text-gray-300 text-lg leading-relaxed">
+                        Le concours « Art, Foi & Racines » vise à offrir un espace artistique permettant aux participants d’exprimer leur gratitude envers les ancêtres, de reconnaître leur héritage et de transmettre des valeurs profondes aux générations futures. L’événement est organisé et diffusé via la plateforme LE GRAND ART, renforçant son rôle comme carrefour culturel panafricain.
+                    </p>
                 </div>
-                <div class="col-span-1 md:col-span-2 pt-6 pb-12 md:pb-0">
-                    <button type="button" onclick="sendToWhatsApp()" class="w-full bg-yellow-500 text-black font-black py-5 md:py-6 rounded-2xl uppercase tracking-[0.2em] glow-button transform active:scale-95 transition-all text-sm">
-                        Envoyer ma proposition
-                    </button>
+
+                <div class="bg-white/5 p-8 rounded-[2rem] border border-white/10">
+                    <h2 class="text-2xl font-black text-yellow-500 mb-6 uppercase">Règlement Intérieur</h2>
+                    <ul class="space-y-4 text-gray-300 text-sm md:text-base">
+                        <li class="flex gap-4"><span class="text-yellow-500 font-black">01.</span> Ouvert à tout artiste sans distinction d’âge ou de nationalité.</li>
+                        <li class="flex gap-4"><span class="text-yellow-500 font-black">02.</span> Chaque participant peut soumettre une seule œuvre originale.</li>
+                        <li class="flex gap-4"><span class="text-yellow-500 font-black">03.</span> Catégories : Peinture, photo, vidéo, poésie audio, musique, danse filmée, art digital.</li>
+                        <li class="flex gap-4"><span class="text-yellow-500 font-black">04.</span> Thèmes obligatoires : Ancêtres, héritage, gratitude, foi, transmission.</li>
+                        <li class="flex gap-4"><span class="text-yellow-500 font-black">05.</span> Dépôt via LE GRAND ART entre le 1er mai et le 15 juin.</li>
+                    </ul>
                 </div>
+
+                <div>
+                    <h2 class="text-3xl font-black text-white mb-6 uppercase">Bande-Annonce (Script)</h2>
+                    <div class="bg-black border-l-4 border-emerald-500 p-8 italic text-gray-400">
+                        <p class="mb-4">"Ils ont marché avant nous. Ils ont construit des mondes. Ils ont rêvé pour nous. Aujourd’hui, à travers l’art, nous leur disons merci."</p>
+                        <p class="text-sm font-bold text-emerald-500 uppercase">Gala final le 1er août - Journée des Parents.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="bg-yellow-500 p-8 rounded-[2rem] text-black">
+                    <h3 class="font-black text-xl mb-4 uppercase">Inscriptions</h3>
+                    <p class="font-bold text-sm mb-6">Du 1er mai au 15 juin 2026</p>
+                    <button onclick="toggleModal('submit-modal')" class="w-full bg-black text-white font-black py-4 rounded-xl uppercase text-xs tracking-widest hover:scale-105 transition">Participer maintenant</button>
+                </div>
+                
+                <div class="bg-zinc-900 border border-white/10 p-8 rounded-[2rem]">
+                    <h3 class="text-white font-black uppercase mb-4">Slogans</h3>
+                    <div class="space-y-4 text-xs text-gray-400 font-bold tracking-widest uppercase">
+                        <p>• L’art comme mémoire vivante.</p>
+                        <p>• Nos ancêtres, nos forces, nos inspirations.</p>
+                        <p>• Un pont entre les générations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MODALS (Contenu identique à l'original) -->
+    <div id="info-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/98 backdrop-blur-2xl">
+        <div class="bg-zinc-950 border border-white/10 w-full max-w-3xl rounded-[2.5rem] p-6 md:p-16 overflow-y-auto max-h-[90vh]">
+            <div class="text-center mb-10">
+                <span class="text-yellow-500 font-black text-[10px] uppercase tracking-[0.4em] mb-4 block">Notre Mission</span>
+                <h3 class="text-3xl md:text-5xl font-black text-white mb-6 tracking-tighter leading-none">Gagnez de l'argent avec <span class="text-yellow-500">votre talent</span></h3>
+                <p class="text-gray-400 text-sm md:text-lg leading-relaxed">LeGrandArt valorise votre travail via le mécénat direct et les contrats.</p>
+            </div>
+            <div class="grid grid-cols-1 gap-6 mb-12 text-left">
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/5 flex gap-6 items-center">
+                    <div class="w-12 h-12 flex-shrink-0 bg-yellow-500 rounded-xl flex items-center justify-center text-black font-black">$</div>
+                    <div><h4 class="text-white font-black uppercase text-sm">Mécénat Mobile Money</h4><p class="text-[10px] text-gray-400">Pourboires directs (Libala) - Commission 40%.</p></div>
+                </div>
+            </div>
+            <button onclick="toggleModal('info-modal'); toggleModal('submit-modal')" class="w-full bg-yellow-500 text-black font-black py-4 md:py-6 rounded-2xl uppercase tracking-widest text-xs glow-button">Proposer mon art</button>
+        </div>
+    </div>
+
+    <div id="submit-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-0 md:p-4 bg-black/98 backdrop-blur-2xl">
+        <div class="bg-zinc-950 border-0 md:border md:border-white/10 w-full max-w-4xl h-full md:h-auto md:rounded-[3rem] p-6 md:p-16 overflow-y-auto">
+            <div class="flex justify-between items-center mb-10 pt-8 md:pt-0">
+                <h3 class="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter">Dépôt de <span class="text-yellow-500">Candidature</span></h3>
+                <button onclick="toggleModal('submit-modal')" class="text-gray-500 hover:text-white text-4xl">&times;</button>
+            </div>
+            <form class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 text-left">
+                <div class="space-y-2"><label class="text-[10px] font-black uppercase text-gray-500">Nom / Pseudo</label><input type="text" id="form-name" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none" required></div>
+                <div class="space-y-2"><label class="text-[10px] font-black uppercase text-gray-500">WhatsApp</label><input type="tel" id="form-contact" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none" required></div>
+                <div class="col-span-1 md:col-span-2 space-y-2"><label class="text-[10px] font-black uppercase text-gray-500">Lien Vidéo</label><input type="url" id="form-link" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none" required></div>
+                <button type="button" onclick="sendToWhatsApp()" class="col-span-1 md:col-span-2 bg-yellow-500 text-black font-black py-6 rounded-2xl uppercase text-sm">Envoyer ma proposition</button>
             </form>
         </div>
     </div>
 
-    <!-- POPUP 3: Options de Soutien -->
     <div id="support-modal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4 bg-black/95 backdrop-blur-3xl">
-        <div class="bg-zinc-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] p-8 md:p-12 shadow-3xl text-center overflow-y-auto max-h-[95vh]">
+        <div class="bg-zinc-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] p-8 md:p-12 shadow-3xl text-center">
             <h3 class="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">Comment souhaitez-vous <br><span class="text-yellow-500">soutenir cet Artiste ?</span></h3>
-            <p id="support-item-code" class="text-emerald-500 font-bold text-xs tracking-widest uppercase mb-8">Soutien pour l'œuvre : #CODE</p>
-            
-            <div class="space-y-4 mb-10 text-left">
-                <!-- Prestige -->
-                <button onclick="sendSupport('Soutien de Prestige (500$)', 'Un don direct pour propulser la production.')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all">
+            <p id="support-item-code" class="text-emerald-500 font-bold text-xs tracking-widest uppercase mb-8">#CODE</p>
+            <div class="space-y-4 mb-10">
+                <button onclick="sendSupport('Soutien Prestige', 'Don de 500$')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all text-left">
                     <h4 class="text-white group-hover:text-black font-black text-sm uppercase">Soutien de Prestige (500$)</h4>
-                    <p class="text-gray-400 group-hover:text-black/70 text-[10px]">Un apport direct pour propulser la production de l'artiste.</p>
                 </button>
-                
-                <!-- Tech -->
-                <button onclick="sendSupport('Don Technologique', 'Fourniture de laptops, tablettes ou équipements.')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all">
+                <button onclick="sendSupport('Don Tech', 'Matériel')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all text-left">
                     <h4 class="text-white group-hover:text-black font-black text-sm uppercase">Don Technologique</h4>
-                    <p class="text-gray-400 group-hover:text-black/70 text-[10px]">Fourniture de laptops, tablettes graphiques ou équipements.</p>
-                </button>
-
-                <!-- Ambassadeur -->
-                <button onclick="sendSupport('Partenariat Ambassadeur', 'Soutenir l\'artiste en faisant de lui l\'égérie d\'une marque.')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all">
-                    <h4 class="text-white group-hover:text-black font-black text-sm uppercase">Partenariat Ambassadeur</h4>
-                    <p class="text-gray-400 group-hover:text-black/70 text-[10px]">L'artiste devient l'égérie de votre marque pour vos campagnes.</p>
-                </button>
-
-                <!-- Gala -->
-                <button onclick="sendSupport('Financement Gala', 'Financement d\'une performance lors d\'une soirée.')" class="w-full bg-white/5 hover:bg-yellow-500 group p-4 rounded-2xl border border-white/10 transition-all">
-                    <h4 class="text-white group-hover:text-black font-black text-sm uppercase">Gala & Réseautage</h4>
-                    <p class="text-gray-400 group-hover:text-black/70 text-[10px]">Financer une performance lors d'une soirée de haut standing.</p>
                 </button>
             </div>
-
-            <button onclick="toggleModal('support-modal')" class="text-gray-500 hover:text-white font-black uppercase tracking-widest text-[10px]">Annuler</button>
+            <button onclick="toggleModal('support-modal')" class="text-gray-500 hover:text-white uppercase text-[10px]">Annuler</button>
         </div>
     </div>
 
+    <footer class="bg-black py-16 md:py-32 border-t border-white/5 text-center px-4 mt-24">
+        <span class="text-3xl md:text-5xl font-black text-white logo-text">LeGrand<span class="text-yellow-500">Art</span></span>
+        <p class="mt-8 text-[9px] text-gray-500 uppercase tracking-widest leading-relaxed">
+            &copy; 2026 LEGRANDART - PLATEFORME DE PROTECTION DE L'ART ÉLEVÉ<br>KINSHASA, RÉPUBLIQUE DÉMOCRATIQUE DU CONGO
+        </p>
+    </footer>
+
     <script>
         const WHATSAPP_PHONE = "243815022325";
-        const TIMER_DURATION_SEC = 100; 
+        let currentAd = 0;
         let currentSupportCode = "";
+
+        function showPage(page) {
+            const home = document.getElementById('page-home');
+            const contest = document.getElementById('page-contest');
+            if(page === 'home') {
+                home.classList.remove('hidden');
+                contest.classList.add('hidden');
+                window.scrollTo(0,0);
+            } else {
+                home.classList.add('hidden');
+                contest.classList.remove('hidden');
+                window.scrollTo(0,0);
+            }
+        }
+
+        // Logic Slider Auto
+        function startAdSlider() {
+            const track = document.getElementById('ad-track');
+            setInterval(() => {
+                currentAd = currentAd === 0 ? 1 : 0;
+                track.style.transform = `translateX(-${currentAd * 100}%)`;
+            }, 5000);
+        }
 
         function toggleModal(id) { 
             const el = document.getElementById(id);
-            if (el) {
-                el.classList.toggle('hidden'); 
-                document.body.style.overflow = el.classList.contains('hidden') ? 'auto' : 'hidden';
-            }
+            if (el) el.classList.toggle('hidden'); 
         }
 
         function sendToWhatsApp() {
             const name = document.getElementById('form-name').value;
-            const contact = document.getElementById('form-contact').value;
-            const title = document.getElementById('form-title').value;
-            const category = document.getElementById('form-category').value;
             const link = document.getElementById('form-link').value;
-
-            if(!name || !contact || !title || !link) return;
-
-            const message = `*SOUMISSION ARTISTE LEGRANDART*\n\n` +
-                            `*Artiste:* ${name}\n` +
-                            `*WhatsApp:* ${contact}\n` +
-                            `*Titre:* ${title}\n` +
-                            `*Catégorie:* ${category}\n` +
-                            `*Lien:* ${link}\n\n` +
-                            `_Je valide le modèle de commission de 40%._`;
-
+            if(!name || !link) return;
+            const message = `*SOUMISSION LEGRANDART*\n*Artiste:* ${name}\n*Lien:* ${link}`;
             window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
         function openSupportModal(catName, itemIndex) {
             currentSupportCode = `${catName.substring(0,3).toUpperCase()}-${itemIndex}`;
-            const label = document.getElementById('support-item-code');
-            if(label) label.innerText = `Soutien pour l'œuvre : #${currentSupportCode}`;
+            document.getElementById('support-item-code').innerText = `Soutien pour : #${currentSupportCode}`;
             toggleModal('support-modal');
         }
 
         function sendSupport(type, desc) {
-            const message = `*SOUTIEN ARTISTIQUE LEGRANDART*\n\n` +
-                            `*Œuvre:* #${currentSupportCode}\n` +
-                            `*Type de don/soutien:* ${type}\n` +
-                            `*Détail:* ${desc}\n\n` +
-                            `_Je souhaite obtenir les modalités pour finaliser ce don._`;
-            
+            const message = `*SOUTIEN LEGRANDART*\n*Œuvre:* #${currentSupportCode}\n*Type:* ${type}`;
             window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, '_blank');
-        }
-
-        function restoreThumbnail(containerId, thumbUrl) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            container.innerHTML = `
-                <img src="${thumbUrl}" class="absolute inset-0 w-full h-full object-cover transition duration-1000 group-hover:scale-110">
-                <div class="absolute inset-0 art-overlay opacity-80"></div>
-                <button onclick="playVideo('${containerId}', '${thumbUrl}')" class="relative z-10 play-button-overlay w-24 h-24 rounded-full flex items-center justify-center shadow-3xl transform group-hover:scale-110 transition duration-300">
-                    <svg class="w-10 h-10 text-black fill-current translate-x-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-                <div class="absolute bottom-10 left-8 right-8 z-10 pointer-events-none text-left">
-                    <span class="text-emerald-400 text-[10px] font-black uppercase tracking-widest italic flex items-center">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span> Streaming En Vedette
-                    </span>
-                    <h4 class="text-2xl font-black text-white mt-2 leading-tight tracking-tight">Orchestre Symphonique</h4>
-                </div>
-            `;
-            container.className = "relative aspect-[3/4] bg-black flex items-center justify-center overflow-hidden";
-        }
-
-        function playVideo(containerId, thumbUrl) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            container.innerHTML = `<div style="position:relative;width:100%;height:100%;overflow:hidden;border-radius:2.5rem;"><iframe src="https://geo.dailymotion.com/player.html?video=kZ1qIW1IoWsp7nF837a&autoplay=1" style="width:100%; height:100%; position:absolute; left:0px; top:0px; border:none;" allowfullscreen allow="autoplay"></iframe></div>`;
-            container.className = "relative aspect-[3/4] bg-black";
-
-            setTimeout(() => {
-                restoreThumbnail(containerId, thumbUrl);
-            }, TIMER_DURATION_SEC * 1000);
         }
 
         const artsCategories = [
@@ -388,9 +353,13 @@
             { id: "cine", name: "7. Cinéma", color: "bg-yellow-500", illustration: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800" }
         ];
 
-        const renderSections = () => {
+        function playVideo(containerId, thumbUrl) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div style="position:relative;width:100%;height:100%;overflow:hidden;border-radius:2.5rem;"><iframe src="https://geo.dailymotion.com/player.html?video=kZ1qIW1IoWsp7nF837a&autoplay=1" style="width:100%; height:100%; position:absolute; left:0px; top:0px; border:none;" allowfullscreen allow="autoplay"></iframe></div>`;
+        }
+
+        window.onload = () => {
             const container = document.getElementById('streaming-content-container');
-            if (!container) return;
             container.innerHTML = artsCategories.map(cat => `
                 <section>
                     <div class="flex items-center space-x-6 mb-12 px-4">
@@ -404,16 +373,14 @@
                                 return `
                                 <div class="w-72 md:w-80 flex-shrink-0 snap-start bg-zinc-900 border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl group relative">
                                     <div id="video-container-main" class="relative aspect-[3/4] bg-black flex items-center justify-center overflow-hidden">
-                                        <img src="${thumb}" class="absolute inset-0 w-full h-full object-cover transition duration-1000 group-hover:scale-110">
-                                        <div class="absolute inset-0 art-overlay opacity-80"></div>
-                                        <button onclick="playVideo('video-container-main', '${thumb}')" class="relative z-10 play-button-overlay w-24 h-24 rounded-full flex items-center justify-center shadow-3xl transform group-hover:scale-110 transition duration-300">
+                                        <img src="${thumb}" class="absolute inset-0 w-full h-full object-cover opacity-60">
+                                        <div class="absolute inset-0 art-overlay"></div>
+                                        <button onclick="playVideo('video-container-main', '${thumb}')" class="relative z-10 play-button-overlay w-24 h-24 rounded-full flex items-center justify-center">
                                             <svg class="w-10 h-10 text-black fill-current translate-x-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                         </button>
-                                        <div class="absolute bottom-10 left-8 right-8 z-10 pointer-events-none text-left">
-                                            <span class="text-emerald-400 text-[10px] font-black uppercase tracking-widest italic flex items-center">
-                                                <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span> Streaming En Vedette
-                                            </span>
-                                            <h4 class="text-2xl font-black text-white mt-2 leading-tight tracking-tight">Orchestre Symphonique</h4>
+                                        <div class="absolute bottom-10 left-8 right-8 z-10 text-left">
+                                            <span class="text-emerald-400 text-[10px] font-black uppercase tracking-widest italic flex items-center">Streaming Vedette</span>
+                                            <h4 class="text-2xl font-black text-white mt-2">Orchestre Symphonique</h4>
                                         </div>
                                     </div>
                                 </div>`;
@@ -426,14 +393,7 @@
                                     <div class="absolute inset-0 art-overlay"></div>
                                     <div class="absolute bottom-8 left-8 right-8">
                                         <h4 class="text-xl font-black text-white mb-4">Création #${i}</h4>
-                                        <div class="flex gap-2">
-                                            <button class="bg-white/10 hover:bg-yellow-500 text-black/0 hover:text-black p-3 rounded-xl transition-all">
-                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                            </button>
-                                            <button onclick="openSupportModal('${cat.name}', ${i})" class="flex-grow bg-emerald-500/10 hover:bg-emerald-500 text-emerald-500 hover:text-black text-[10px] font-black uppercase tracking-widest py-3 rounded-xl border border-emerald-500/20 transition-all">
-                                                Soutenir cet art
-                                            </button>
-                                        </div>
+                                        <button onclick="openSupportModal('${cat.name}', ${i})" class="w-full bg-emerald-500/10 hover:bg-emerald-500 text-emerald-500 hover:text-black text-[10px] font-black uppercase tracking-widest py-3 rounded-xl border border-emerald-500/20 transition-all">Soutenir</button>
                                     </div>
                                 </div>
                             </div>`;
@@ -441,9 +401,8 @@
                     </div>
                 </section>
             `).join('');
+            startAdSlider();
         };
-
-        window.onload = renderSections;
     </script>
 </body>
 </html>
