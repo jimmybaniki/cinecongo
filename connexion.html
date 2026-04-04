@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Grand Art | Portail de Connexion</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AOS Animation CSS & JS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <!-- Three.js et Vanta.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(30,25,0,0.9) 100%);
+        }
+        
+        .category-chip {
+            transition: all 0.3s ease;
+        }
+        .category-chip:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(234, 179, 8, 0.2);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #eab308; 
+            border-radius: 4px;
+        }
+
+        /* Effet de flou pour la connexion */
+        .glass-portal {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        #login-portal {
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-premium {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .input-premium:focus {
+            border-color: #eab308;
+            background: rgba(234, 179, 8, 0.05);
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.1);
+        }
+
+        /* Masquage initial du contenu */
+        #main-app {
+            display: none;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .animate-shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans antialiased overflow-hidden">
+
+    <!-- PORTAIL DE CONNEXION -->
+    <div id="login-portal" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div id="vanta-bg" class="absolute inset-0 z-0"></div>
+        
+        <div class="glass-portal w-full max-w-lg p-10 md:p-16 rounded-[2rem] z-10 relative overflow-hidden" data-aos="zoom-in">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-yellow-500/10 rounded-full blur-3xl"></div>
+            
+            <div class="text-center mb-12">
+                <div class="inline-block p-4 rounded-2xl bg-yellow-500/10 mb-6">
+                    <i data-feather="shield" class="w-10 h-10 text-yellow-500"></i>
+                </div>
+                <h1 class="text-3xl font-black tracking-tighter text-white mb-2">
+                    LE GRAND <span class="text-yellow-500">ART</span>
+                </h1>
+                <p class="text-gray-400 text-sm font-medium tracking-widest uppercase">Espace Membre Premium</p>
+            </div>
+
+            <form id="portal-form" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Identifiant Unique</label>
+                    <div class="relative">
+                        <i data-feather="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+                        <input type="email" id="user-input" required
+                            class="input-premium w-full rounded-2xl pl-12 pr-4 py-4 text-white outline-none placeholder:text-gray-700" 
+                            placeholder="nom@exemple.com">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Mot de Passe</label>
+                    <div class="relative">
+                        <i data-feather="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"></i>
+                        <input type="password" id="pass-input" required
+                            class="input-premium w-full rounded-2xl pl-12 pr-4 py-4 text-white outline-none placeholder:text-gray-700" 
+                            placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div id="error-box" class="hidden text-center p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold animate-pulse">
+                    Accès refusé. Identifiants invalides.
+                </div>
+
+                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black py-5 rounded-2xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl shadow-yellow-500/20 uppercase tracking-widest text-sm">
+                    S'authentifier
+                </button>
+            </form>
+
+            <div class="mt-12 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] text-gray-600 uppercase tracking-widest">
+                <span>Portail Sécurisé v2.5</span>
+                <span class="text-yellow-500/50">Accès Restreint</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENU PRINCIPAL (Masqué au démarrage) -->
+    <main id="main-app" class="relative z-10 overflow-x-hidden">
+        <!-- Navigation Premium -->
+        <nav class="bg-black/95 sticky top-0 z-50 border-b border-gray-800 backdrop-blur-sm">
+            <div class="max-w-[1600px] mx-auto px-4 md:px-6 flex justify-between items-center h-20">
+                <div class="flex items-center space-x-12">
+                    <a href="#" class="flex flex-col leading-none">
+                        <span class="text-2xl md:text-4xl font-black text-white logo-text">
+                            LeGrand<span class="text-yellow-500">Art</span>
+                        </span>
+                        <span class="text-[8px] md:text-[9px] uppercase tracking-[0.4em] text-yellow-500 font-black mt-1">Streaming Officiel</span>
+                    </a>
+                    
+                    <div class="hidden lg:flex space-x-8">
+                        <a href="#" class="text-yellow-500 font-medium transition">Accueil</a>
+                        <a href="#" class="text-gray-300 hover:text-yellow-500 transition">Ma Liste</a>
+                        <a href="#" class="text-gray-300 hover:text-yellow-500 transition">Films</a>
+                        <a href="#" class="text-gray-300 hover:text-yellow-500 transition">Séries</a>
+                        <a href="#" class="text-gray-300 hover:text-yellow-500 transition">Exclusivités Premium</a>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-6">
+                    <button class="p-2 text-gray-300 hover:text-yellow-500 transition"><i data-feather="search"></i></button>
+                    <button class="p-2 text-gray-300 hover:text-yellow-500 transition relative">
+                        <i data-feather="bell"></i>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-yellow-500 rounded-full"></span>
+                    </button>
+                    
+                    <div class="flex items-center space-x-3 cursor-pointer group">
+                        <div class="flex flex-col text-right hidden md:block">
+                            <span class="text-sm font-bold group-hover:text-yellow-500 transition">Elie Twikala</span>
+                            <span class="text-xs text-yellow-500 font-semibold tracking-wider uppercase">Membre Premium</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full border-2 border-yellow-500 p-0.5">
+                            <img src="https://ui-avatars.com/api/?name=Elie+Twikala&background=eab308&color=000&bold=true" alt="Profil d'Elie" class="w-full h-full rounded-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <div id="hero-main" class="relative h-[80vh] flex items-center justify-center overflow-hidden border-b border-gray-800">
+            <div class="absolute inset-0 hero-gradient opacity-90"></div>
+            <div class="container mx-auto px-6 z-10 text-center mt-10">
+                <span class="inline-block py-1 px-3 rounded-full bg-yellow-500/20 text-yellow-500 text-sm font-bold tracking-widest mb-4">COMPTE PREMIUM ACTIF</span>
+                <h1 class="text-5xl md:text-7xl font-bold mb-4">Content de vous revoir, <span class="text-yellow-500">Elie</span>.</h1>
+                <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto text-gray-300">Reprenez là où vous vous êtes arrêté ou découvrez les dernières nouveautés en exclusivité.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button class="bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-3 rounded-full font-bold text-lg transition-all transform hover:scale-105 flex items-center justify-center">
+                        <i data-feather="play" class="mr-2 fill-current"></i> Continuer la lecture
+                    </button>
+                    <button class="bg-gray-900 border-2 border-gray-700 hover:border-yellow-500 hover:text-yellow-500 px-8 py-3 rounded-full font-semibold text-lg transition-all transform hover:scale-105">
+                        Voir Ma Liste
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Continue Watching Section -->
+        <section class="py-16 bg-black">
+            <div class="container mx-auto px-6">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl md:text-3xl font-bold border-l-4 border-yellow-500 pl-3">Reprendre avec le profil d'Elie</h2>
+                    <a href="#" class="text-yellow-500 hover:text-yellow-400 flex items-center text-sm font-semibold">
+                        Tout l'historique <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="film-card relative rounded-lg overflow-hidden group border border-gray-800 hover:border-yellow-500 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=640&q=80" alt="Film" class="w-full h-40 object-cover">
+                        <div class="w-full bg-gray-700 h-1"><div class="bg-yellow-500 h-1" style="width: 65%"></div></div>
+                        <div class="p-4 bg-gray-900">
+                            <h3 class="font-bold text-white group-hover:text-yellow-500 transition">La Cité des Anges</h3>
+                            <p class="text-xs text-gray-400 mt-1">S1:E4 - Il reste 20 min</p>
+                        </div>
+                    </div>
+                    <div class="film-card relative rounded-lg overflow-hidden group border border-gray-800 hover:border-yellow-500 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=640&q=80" alt="Film" class="w-full h-40 object-cover">
+                        <div class="w-full bg-gray-700 h-1"><div class="bg-yellow-500 h-1" style="width: 15%"></div></div>
+                        <div class="p-4 bg-gray-900">
+                            <h3 class="font-bold text-white group-hover:text-yellow-500 transition">Kinshasa Noir</h3>
+                            <p class="text-xs text-gray-400 mt-1">Film - Il reste 1h 45m</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="py-12 bg-[#0a0a0a] border-y border-gray-900">
+            <div class="container mx-auto px-6">
+                <h2 class="text-2xl font-bold mb-8 text-center">Explorer vos genres préférés</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 text-center">
+                    <div class="category-chip bg-gray-900 border border-gray-800 p-4 rounded-lg cursor-pointer hover:bg-yellow-500 hover:text-black">
+                        <i data-feather="zap" class="mx-auto mb-2"></i><span>Action</span>
+                    </div>
+                    <div class="category-chip bg-gray-900 border border-gray-800 p-4 rounded-lg cursor-pointer hover:bg-yellow-500 hover:text-black">
+                        <i data-feather="smile" class="mx-auto mb-2"></i><span>Comédie</span>
+                    </div>
+                    <div class="category-chip bg-gray-900 border border-gray-800 p-4 rounded-lg cursor-pointer hover:bg-yellow-500 hover:text-black">
+                        <i data-feather="alert-triangle" class="mx-auto mb-2"></i><span>Drame</span>
+                    </div>
+                    <div class="category-chip bg-gray-900 border border-gray-800 p-4 rounded-lg cursor-pointer hover:bg-yellow-500 hover:text-black">
+                        <i data-feather="eye" class="mx-auto mb-2"></i><span>Thriller</span>
+                    </div>
+                    <div class="category-chip bg-gray-900 border border-gray-800 p-4 rounded-lg cursor-pointer hover:bg-yellow-500 hover:text-black">
+                        <i data-feather="globe" class="mx-auto mb-2"></i><span>Documentaire</span>
+                    </div>
+                    <div class="category-chip bg-gray-900 border border-gray-800 p-4 rounded-lg cursor-pointer hover:bg-yellow-500 hover:text-black">
+                        <i data-feather="heart" class="mx-auto mb-2"></i><span>Romance</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-black py-12 border-t border-gray-900">
+            <div class="container mx-auto px-6 text-center text-gray-500 text-sm">
+                <p>© 2026 Le Grand Art. Tous droits réservés.</p>
+                <p class="mt-2">Connecté en tant que : <strong class="text-yellow-500">Elie Twikala</strong></p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+            AOS.init({ once: true });
+
+            // Effet Vanta sur le portail de connexion
+            let vantaEffect = VANTA.GLOBE({
+                el: "#vanta-bg",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0xeab308,
+                backgroundColor: 0x000000,
+                size: 1.0
+            });
+
+            const portal = document.getElementById('login-portal');
+            const form = document.getElementById('portal-form');
+            const mainApp = document.getElementById('main-app');
+            const errorBox = document.getElementById('error-box');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('user-input').value;
+                const pass = document.getElementById('pass-input').value;
+
+                if (email === "elietwikala@legrandart.org" && pass === "admin2026") {
+                    // Animation de sortie du portail
+                    portal.style.opacity = "0";
+                    portal.style.transform = "scale(1.1) translateY(-20px)";
+                    portal.style.filter = "blur(20px)";
+                    
+                    setTimeout(() => {
+                        portal.style.display = "none";
+                        mainApp.style.display = "block";
+                        document.body.style.overflowY = "auto";
+                        
+                        setTimeout(() => {
+                            mainApp.style.opacity = "1";
+                            
+                            // Re-init Vanta pour le hero si nécessaire
+                            VANTA.GLOBE({
+                                el: "#hero-main",
+                                mouseControls: true,
+                                color: 0xeab308,
+                                backgroundColor: 0x000000,
+                                size: 0.8
+                            });
+                        }, 100);
+                    }, 1000);
+
+                } else {
+                    errorBox.classList.remove('hidden');
+                    form.classList.add('animate-shake');
+                    setTimeout(() => form.classList.remove('animate-shake'), 500);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
