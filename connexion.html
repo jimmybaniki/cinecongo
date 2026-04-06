@@ -1,637 +1,245 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-        <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-T00CMP9WFH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-T00CMP9WFH');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T00CMP9WFH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-T00CMP9WFH');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Grand Art | Portail Cinéma Premium</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <!-- Font Awesome & Feather Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
-    
-    <!-- Three.js et Vanta.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
-        
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #030303; 
-            color: #ffffff;
-            scroll-behavior: smooth;
-        }
-
-        .glass-header {
-            background: rgba(3, 3, 3, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .premium-gradient-bg {
-            background: radial-gradient(circle at top right, rgba(234, 179, 8, 0.15), transparent),
-                        radial-gradient(circle at bottom left, rgba(234, 179, 8, 0.05), transparent);
-        }
-
-        .input-premium {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .input-premium:focus {
-            border-color: #eab308;
-            background: rgba(234, 179, 8, 0.05);
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.15);
-        }
-
-        .movie-card {
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .movie-card:hover {
-            transform: translateY(-10px) scale(1.02);
-        }
-
-        #main-app { display: none; opacity: 0; transition: opacity 1s ease; }
-
-        .search-overlay {
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s ease;
-            background: rgba(0, 0, 0, 0.98);
-        }
-        .search-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .category-btn {
-            white-space: nowrap;
-            transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .category-btn.active {
-            background-color: #eab308;
-            color: #000;
-            border-color: #eab308;
-            box-shadow: 0 10px 20px rgba(234, 179, 8, 0.2);
-        }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        .footer-link {
-            transition: color 0.3s ease;
-            color: #71717a;
-        }
-        .footer-link:hover {
-            color: #eab308;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030303; color: #ffffff; scroll-behavior: smooth; }
+        .glass-header { background: rgba(3, 3, 3, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .input-premium { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.4s; color: white; }
+        .input-premium:focus { border-color: #eab308; background: rgba(234, 179, 8, 0.05); box-shadow: 0 0 25px rgba(234, 179, 8, 0.15); }
+        .movie-card { transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 1.5rem; overflow: hidden; }
+        .movie-card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(234, 179, 8, 0.3); }
+        #main-app { display: none; opacity: 0; }
+        .search-overlay { opacity: 0; pointer-events: none; transition: all 0.4s ease; background: rgba(0, 0, 0, 0.98); }
+        .search-overlay.active { opacity: 1; pointer-events: auto; }
     </style>
 </head>
 <body class="overflow-hidden">
 
     <!-- PORTAIL DE CONNEXION -->
-    <div id="login-portal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 transition-all duration-1000">
+    <div id="login-portal" class="fixed inset-0 z-[100] flex items-center justify-center p-6">
         <div id="vanta-bg" class="absolute inset-0 z-0"></div>
-        
-        <div class="w-full max-w-lg p-12 md:p-16 rounded-[3rem] z-10 relative bg-black/60 backdrop-blur-3xl border border-white/10 shadow-2xl" data-aos="fade-up">
-            <div class="text-center mb-12">
-                <div class="inline-flex p-5 rounded-3xl bg-yellow-500/10 mb-6 border border-yellow-500/20">
-                    <i data-feather="shield" class="w-10 h-10 text-yellow-500"></i>
-                </div>
-                <h1 class="text-5xl font-black tracking-tight mb-2 uppercase">Le Grand <span class="text-yellow-500">Art</span></h1>
-                <p class="text-zinc-500 text-xs uppercase tracking-[0.4em] font-bold">Authentification Premium</p>
+        <div class="w-full max-w-lg p-10 rounded-[3rem] z-10 relative bg-black/60 backdrop-blur-3xl border border-white/10 shadow-2xl" data-aos="zoom-in">
+            <div class="text-center mb-10">
+                <div class="inline-flex p-5 rounded-3xl bg-yellow-500/10 mb-6 border border-yellow-500/20"><i data-feather="lock" class="w-10 h-10 text-yellow-500"></i></div>
+                <h1 class="text-4xl font-black tracking-tight mb-2 uppercase">Le Grand <span class="text-yellow-500">Art</span></h1>
+                <p class="text-zinc-500 text-[10px] uppercase tracking-[0.4em] font-bold">Système d'Accès Sécurisé</p>
             </div>
-
-            <form id="portal-form" class="space-y-8">
-                <div class="space-y-3">
-                    <label class="text-[10px] uppercase tracking-widest text-zinc-400 font-bold ml-1">E-mail de session</label>
-                    <input type="email" id="user-input" required placeholder="votre@email.com" class="input-premium w-full rounded-2xl px-6 py-5 outline-none text-sm">
-                </div>
-                <div class="space-y-3">
-                    <label class="text-[10px] uppercase tracking-widest text-zinc-400 font-bold ml-1">Clé d'accès cryptée</label>
-                    <input type="password" id="pass-input" required placeholder="••••••••" class="input-premium w-full rounded-2xl px-6 py-5 outline-none text-sm">
-                </div>
-                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black py-6 rounded-2xl transition-all shadow-2xl shadow-yellow-500/30 uppercase tracking-widest text-sm">
-                    Initialiser la session
-                </button>
+            <form id="portal-form" class="space-y-6">
+                <input type="email" id="user-input" required placeholder="E-mail" class="input-premium w-full rounded-2xl px-6 py-5 outline-none text-sm">
+                <input type="password" id="pass-input" required placeholder="Clé d'Accès" class="input-premium w-full rounded-2xl px-6 py-5 outline-none text-sm">
+                <button type="submit" id="login-btn" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black py-5 rounded-2xl transition-all shadow-2xl shadow-yellow-500/30 uppercase tracking-widest text-sm">Initialiser la session</button>
             </form>
-            
-            <div class="mt-10 text-center">
-                <p class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">Technologie sécurisée par L.G.A Systems</p>
+            <div class="mt-8 text-center"><p class="text-zinc-500 text-xs">Pas encore de clé ? <button id="open-signup" class="text-yellow-500 font-bold underline underline-offset-4">S'inscrire</button></p></div>
+        </div>
+    </div>
+
+    <!-- MODAL D'INSCRIPTION -->
+    <div id="signup-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" id="close-signup-overlay"></div>
+        <div class="w-full max-w-lg p-10 rounded-[3rem] z-10 relative bg-zinc-900 border border-white/10 shadow-2xl">
+            <h2 class="text-2xl font-black uppercase mb-8">Nouvelle <span class="text-yellow-500">Clé</span></h2>
+            <form id="signup-form" class="space-y-5">
+                <input type="text" id="reg-name" required placeholder="Nom complet" class="input-premium w-full rounded-2xl px-6 py-4 outline-none text-sm">
+                <input type="email" id="reg-email" required placeholder="E-mail" class="input-premium w-full rounded-2xl px-6 py-4 outline-none text-sm">
+                <input type="password" id="reg-pass" required placeholder="Définir une clé" class="input-premium w-full rounded-2xl px-6 py-4 outline-none text-sm">
+                <button type="submit" id="signup-submit" class="w-full bg-white text-black font-black py-5 rounded-2xl hover:bg-yellow-500 transition-all uppercase tracking-widest text-sm">Enregistrer mes accès</button>
+            </form>
+            <div id="signup-success" class="hidden absolute inset-0 bg-zinc-900 rounded-[3rem] flex flex-col items-center justify-center p-10 text-center">
+                <i data-feather="check-circle" class="w-16 h-16 text-green-500 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Inscription Réussie</h3>
+                <p class="text-zinc-400 text-xs mb-4">Vos accès ont été enregistrés dans la base de données.</p>
+                <button onclick="location.reload()" class="text-yellow-500 font-bold text-xs uppercase tracking-widest mt-4">Retour à la connexion</button>
             </div>
         </div>
     </div>
 
     <!-- APPLICATION PRINCIPALE -->
-    <main id="main-app" class="relative premium-gradient-bg">
-        
-        <!-- Overlay Recherche Avancée -->
-        <div id="search-overlay" class="fixed inset-0 z-[70] search-overlay flex flex-col p-8 md:p-20 overflow-y-auto">
-            <div class="flex justify-between items-center mb-16">
-                <div class="text-3xl font-black italic tracking-tighter">EXPLORATION <span class="text-yellow-500">ARTISTIQUE</span></div>
-                <button id="close-search" class="w-14 h-14 rounded-2xl bg-white/5 hover:bg-red-500/20 hover:text-red-500 transition-all flex items-center justify-center border border-white/10">
-                    <i data-feather="x"></i>
-                </button>
-            </div>
-            
-            <div class="max-w-5xl mx-auto w-full">
-                <div class="relative group">
-                    <i data-feather="search" class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 text-zinc-700 group-focus-within:text-yellow-500 transition-colors"></i>
-                    <input type="text" id="search-input" placeholder="Quel chef-d'œuvre recherchez-vous ?" class="w-full bg-transparent border-b border-zinc-800 text-3xl md:text-5xl font-bold outline-none pb-8 pl-16 placeholder:text-zinc-900 focus:border-yellow-500 transition-all">
-                </div>
-                
-                <div class="mt-20">
-                    <h4 class="text-xs font-black text-zinc-500 uppercase tracking-[0.3em] mb-10">Résultats de votre recherche</h4>
-                    <div id="search-results" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                        <!-- Rempli par JS -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Navigation Premium -->
+    <main id="main-app">
         <nav class="fixed w-full z-50 glass-header px-6 md:px-12 py-5 flex justify-between items-center">
-            <div class="flex items-center gap-14">
-                <div class="text-2xl font-black tracking-tighter text-white">LEGRAND<span class="text-yellow-500">ART</span></div>
-                <div class="hidden lg:flex gap-10 text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400">
-                    <a href="#" class="text-yellow-500 border-b-2 border-yellow-500 pb-1">Accueil</a>
-                    <a href="#" class="hover:text-white transition">Films</a>
-                    <a href="#" class="hover:text-white transition">Séries</a>
-                    <a href="#" class="hover:text-white transition">Documentaires</a>
-                    <a href="#" class="hover:text-white transition">Direct</a>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-8">
-                <button id="trigger-search" class="p-2 text-zinc-400 hover:text-yellow-500 transition-colors">
-                    <i data-feather="search" class="w-5 h-5"></i>
-                </button>
-                <div id="profile-btn" class="flex items-center gap-4 cursor-pointer group bg-white/5 pr-5 pl-1.5 py-1.5 rounded-2xl border border-white/5 hover:border-yellow-500/50 transition-all">
-                    <div class="relative">
-                        <img id="nav-avatar" src="https://ui-avatars.com/api/?name=User&background=eab308&color=000&bold=true" class="w-9 h-9 rounded-xl object-cover border border-white/10 shadow-lg">
-                        <span class="absolute -top-1 -right-1 w-3 h-3 bg-green-500 border-2 border-black rounded-full"></span>
-                    </div>
-                    <div class="flex flex-col">
-                        <span id="nav-name" class="text-[11px] font-black group-hover:text-yellow-500 transition-colors">Invité</span>
-                        <span class="text-[8px] text-zinc-500 uppercase tracking-widest font-bold">Membre VIP</span>
-                    </div>
+            <div class="text-2xl font-black tracking-tighter text-white">LEGRAND<span class="text-yellow-500">ART</span></div>
+            <div class="flex items-center gap-6">
+                <button id="trigger-search" class="text-zinc-400 hover:text-white"><i data-feather="search"></i></button>
+                <div class="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-xl border border-white/5">
+                    <img id="nav-avatar" src="https://ui-avatars.com/api/?background=eab308&color=000&bold=true&name=User" class="w-8 h-8 rounded-lg">
+                    <span id="nav-name" class="text-xs font-bold uppercase tracking-widest">Membre</span>
                 </div>
             </div>
         </nav>
 
-        <!-- Hero Section Cinématique -->
-        <header id="hero-vanta" class="h-screen relative flex items-center px-6 md:px-24">
-            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent z-[1]"></div>
-            <div class="z-10 max-w-4xl" data-aos="fade-right">
-                <div class="flex items-center gap-4 mb-8">
-                    <span class="px-4 py-1.5 bg-yellow-500 text-black text-[10px] font-black rounded-lg uppercase tracking-tighter">Premium Exclusive</span>
-                    <span class="w-2 h-2 rounded-full bg-zinc-600"></span>
-                    <span class="text-zinc-400 text-[10px] font-bold uppercase tracking-widest">En ligne : 1,402 membres</span>
-                </div>
-                <!-- Taille diminuée ici : de text-[9rem] à text-5xl md:text-7xl -->
-                <h2 class="text-5xl md:text-7xl font-black leading-tight mb-8 tracking-tighter">L'ART DE <span class="text-yellow-500 uppercase">VOIR</span> PLUS LOIN</h2>
-                <p class="text-zinc-400 text-lg md:text-xl max-w-xl mb-12 leading-relaxed">Plongez dans la plus grande bibliothèque de contenus africains en haute définition. Une expérience sensorielle conçue pour les passionnés du 7ème art.</p>
-                <div class="flex flex-wrap gap-5">
-                    <button class="bg-yellow-500 text-black px-12 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[11px] hover:bg-yellow-400 hover:scale-105 transition-all shadow-xl shadow-yellow-500/20">
-                        Commencer la lecture
-                    </button>
-                    <button class="bg-zinc-900/50 backdrop-blur-md border border-white/10 px-12 py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[11px] hover:bg-white/10 transition-all flex items-center gap-3">
-                        <i data-feather="plus" class="w-4 h-4"></i> Ma Liste
-                    </button>
-                </div>
+        <div id="search-overlay" class="fixed inset-0 z-[70] search-overlay flex flex-col p-8 md:p-20 overflow-y-auto">
+            <div class="flex justify-between items-center mb-16">
+                <h2 class="text-3xl font-black uppercase">Recherche <span class="text-yellow-500">Intelligente</span></h2>
+                <button id="close-search" class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center"><i data-feather="x"></i></button>
+            </div>
+            <input type="text" id="search-input" placeholder="Titre, Genre..." class="w-full bg-transparent border-b border-zinc-800 text-4xl font-bold outline-none pb-6 focus:border-yellow-500 transition-all">
+            <div id="search-results" class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-16"></div>
+        </div>
+
+        <header class="h-[60vh] relative flex items-center px-10 md:px-20 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#030303] to-transparent z-10"></div>
+            <div class="z-20 max-w-3xl">
+                <h2 class="text-6xl font-black uppercase italic leading-none mb-8">Cinéma <span class="text-yellow-500">D'exception</span></h2>
+                <p class="text-zinc-400 text-lg mb-8">Accédez à votre bibliothèque privée en temps réel depuis Google Sheets.</p>
             </div>
         </header>
 
-        <!-- Filtres Dynamiques -->
-        <section class="sticky top-[84px] z-40 py-8 bg-black/95 backdrop-blur-md overflow-x-auto no-scrollbar px-6 md:px-12 flex gap-4 border-b border-white/5 shadow-2xl">
-            <button class="category-btn active px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest" data-filter="tout">Tout l'univers</button>
-            <button class="category-btn px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest" data-filter="documentaire">Documentaires</button>
-            <button class="category-btn px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest" data-filter="action">Action & Drame</button>
-            <button class="category-btn px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest" data-filter="rdc">Séries RDC</button>
-            <button class="category-btn px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest" data-filter="mondial">Cinéma Mondial</button>
-        </section>
-
-        <!-- Grille de Contenu Riche -->
-        <div class="p-6 md:p-20 space-y-32">
-            
-            <!-- Nouvelles Sorties -->
-            <section id="trending">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-14 gap-6">
-                    <div class="space-y-2">
-                        <div class="flex items-center gap-2">
-                            <span class="w-8 h-1 bg-yellow-500 rounded-full"></span>
-                            <span class="text-yellow-500 text-[10px] font-black uppercase tracking-widest">En vedette</span>
-                        </div>
-                        <h3 class="text-4xl md:text-5xl font-black uppercase italic tracking-tighter">Tendances <span class="text-yellow-500 font-normal">Actuelles</span></h3>
-                    </div>
-                    <button class="text-zinc-500 hover:text-yellow-500 font-black text-[10px] uppercase tracking-[0.3em] transition-colors border-b border-zinc-800 pb-2">Explorer la collection complète</button>
-                </div>
-                
-                <div id="grid-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <!-- Film 1 -->
-                    <div class="movie-card group cursor-pointer" data-title="le roi de matonge" data-cat="action">
-                        <div class="relative aspect-video rounded-[2rem] overflow-hidden mb-6 border border-white/5 shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1514306191717-452ec28c7814?auto=format&fit=crop&w=1200" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
-                            <div class="absolute top-6 left-6 bg-red-600 text-white px-3 py-1 text-[9px] font-black rounded-lg uppercase shadow-lg">Nouveauté</div>
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                                <div class="w-16 h-16 rounded-full bg-yellow-500 text-black flex items-center justify-center mb-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
-                                    <i class="fa-solid fa-play text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h4 class="text-2xl font-black mb-2 group-hover:text-yellow-500 transition-colors">Le Roi de Matonge</h4>
-                                <div class="flex items-center gap-4 text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
-                                    <span class="text-yellow-500">Action</span>
-                                    <span>•</span>
-                                    <span>2h 15m</span>
-                                    <span>•</span>
-                                    <span class="px-1 border border-zinc-800 rounded">4K</span>
-                                </div>
-                            </div>
-                            <button class="text-zinc-700 hover:text-white transition-colors"><i data-feather="bookmark" class="w-5 h-5"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Film 2 (Documentaire) -->
-                    <div class="movie-card group cursor-pointer" data-title="lumumba l'heritage" data-cat="documentaire">
-                        <div class="relative aspect-video rounded-[2rem] overflow-hidden mb-6 border border-white/5 shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
-                            <div class="absolute top-6 left-6 bg-yellow-500 text-black px-3 py-1 text-[9px] font-black rounded-lg uppercase shadow-lg">Documentaire</div>
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                                <div class="w-16 h-16 rounded-full bg-yellow-500 text-black flex items-center justify-center mb-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
-                                    <i class="fa-solid fa-play text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h4 class="text-2xl font-black mb-2 group-hover:text-yellow-500 transition-colors">Lumumba : L'Héritage</h4>
-                                <div class="flex items-center gap-4 text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
-                                    <span class="text-yellow-500">Histoire</span>
-                                    <span>•</span>
-                                    <span>1h 45m</span>
-                                    <span>•</span>
-                                    <span class="px-1 border border-zinc-800 rounded">HD</span>
-                                </div>
-                            </div>
-                            <button class="text-zinc-700 hover:text-white transition-colors"><i data-feather="bookmark" class="w-5 h-5"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Film 3 (Série) -->
-                    <div class="movie-card group cursor-pointer" data-title="bana kin" data-cat="rdc">
-                        <div class="relative aspect-video rounded-[2rem] overflow-hidden mb-6 border border-white/5 shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=1200" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
-                            <div class="absolute top-6 left-6 bg-blue-600 text-white px-3 py-1 text-[9px] font-black rounded-lg uppercase shadow-lg">Série Originale</div>
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                                <div class="w-16 h-16 rounded-full bg-yellow-500 text-black flex items-center justify-center mb-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
-                                    <i class="fa-solid fa-play text-xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h4 class="text-2xl font-black mb-2 group-hover:text-yellow-500 transition-colors">Bana Kin</h4>
-                                <div class="flex items-center gap-4 text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
-                                    <span class="text-yellow-500">Saison 2</span>
-                                    <span>•</span>
-                                    <span>12 Épisodes</span>
-                                    <span>•</span>
-                                    <span class="px-1 border border-zinc-800 rounded">4K</span>
-                                </div>
-                            </div>
-                            <button class="text-zinc-700 hover:text-white transition-colors"><i data-feather="bookmark" class="w-5 h-5"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section Cinéma Mondial -->
-            <section id="global-cinema">
-                <div class="mb-14">
-                    <h3 class="text-4xl font-black uppercase tracking-tighter mb-4 italic">Cinéma <span class="text-yellow-500">Mondial</span></h3>
-                    <p class="text-zinc-500 text-sm max-w-xl">Les plus grands succès internationaux, sous-titrés et sélectionnés par nos experts pour vous.</p>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div class="movie-card group cursor-pointer" data-cat="mondial" data-title="interstellar">
-                        <div class="relative aspect-[2/3] rounded-3xl overflow-hidden mb-4 border border-white/5">
-                            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <i class="fa-solid fa-play text-3xl"></i>
-                            </div>
-                        </div>
-                        <h5 class="font-bold text-sm truncate uppercase tracking-tighter">Interstellar</h5>
-                    </div>
-                    <div class="movie-card group cursor-pointer" data-cat="mondial" data-title="parasite">
-                        <div class="relative aspect-[2/3] rounded-3xl overflow-hidden mb-4 border border-white/5">
-                            <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <i class="fa-solid fa-play text-3xl"></i>
-                            </div>
-                        </div>
-                        <h5 class="font-bold text-sm truncate uppercase tracking-tighter">Parasite</h5>
-                    </div>
-                    <div class="movie-card group cursor-pointer" data-cat="mondial" data-title="joker">
-                        <div class="relative aspect-[2/3] rounded-3xl overflow-hidden mb-4 border border-white/5">
-                            <img src="https://images.unsplash.com/photo-1594908122396-26a02931219d?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <i class="fa-solid fa-play text-3xl"></i>
-                            </div>
-                        </div>
-                        <h5 class="font-bold text-sm truncate uppercase tracking-tighter">Joker</h5>
-                    </div>
-                    <div class="movie-card group cursor-pointer" data-cat="mondial" data-title="dune">
-                        <div class="relative aspect-[2/3] rounded-3xl overflow-hidden mb-4 border border-white/5">
-                            <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <i class="fa-solid fa-play text-3xl"></i>
-                            </div>
-                        </div>
-                        <h5 class="font-bold text-sm truncate uppercase tracking-tighter">Dune</h5>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- FOOTER -->
-        <footer class="bg-black py-24 border-t border-white/5 mt-32">
-            <div class="max-w-7xl mx-auto px-6 md:px-12">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 mb-20">
-                    <div class="lg:col-span-2 space-y-8">
-                        <div class="text-4xl font-black italic tracking-tighter">LE GRAND <span class="text-yellow-500">ART</span></div>
-                        <p class="text-zinc-500 text-sm leading-relaxed max-w-sm">
-                            Plus qu'une plateforme, une mission : préserver, promouvoir et diffuser la richesse cinématographique africaine à travers le monde. Rejoignez l'élite du divertissement.
-                        </p>
-                        <div class="flex gap-5">
-                            <a href="#" class="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center hover:bg-yellow-500 hover:text-black transition-all"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="#" class="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center hover:bg-yellow-500 hover:text-black transition-all"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#" class="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center hover:bg-yellow-500 hover:text-black transition-all"><i class="fa-brands fa-whatsapp"></i></a>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-8">
-                        <h6 class="text-[10px] font-black uppercase tracking-[0.3em] text-yellow-500">Navigation</h6>
-                        <ul class="space-y-4">
-                            <li><a href="#" class="footer-link text-sm font-bold">Films Populaires</a></li>
-                            <li><a href="#" class="footer-link text-sm font-bold">Séries Originales</a></li>
-                            <li><a href="#" class="footer-link text-sm font-bold">Nouveautés</a></li>
-                            <li><a href="#" class="footer-link text-sm font-bold">Direct & Live</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="space-y-8">
-                        <h6 class="text-[10px] font-black uppercase tracking-[0.3em] text-yellow-500">Espace Client</h6>
-                        <ul class="space-y-4">
-                            <li><a href="#" class="footer-link text-sm font-bold">Mon Compte</a></li>
-                            <li><a href="#" class="footer-link text-sm font-bold">Centre d'aide</a></li>
-                            <li><a href="#" class="footer-link text-sm font-bold">Abonnement VIP</a></li>
-                            <li><a href="#" class="footer-link text-sm font-bold text-red-500">Déconnexion</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="space-y-8">
-                        <h6 class="text-[10px] font-black uppercase tracking-[0.3em] text-yellow-500">Contact & Support</h6>
-                        <ul class="space-y-4">
-                            <li class="flex items-center gap-3 text-[11px] font-bold text-zinc-400">
-                                <i data-feather="phone" class="w-4 h-4 text-yellow-500"></i> +243 978 415 814
-                            </li>
-                            <li class="flex items-center gap-3 text-[11px] font-bold text-zinc-400">
-                                <i data-feather="mail" class="w-4 h-4 text-yellow-500"></i> support@legrandart.com
-                            </li>
-                            <li class="flex items-center gap-3 text-[11px] font-bold text-zinc-400">
-                                <i data-feather="map-pin" class="w-4 h-4 text-yellow-500"></i> Kinshasa, RDC
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="pt-12 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-8">
-                    <p class="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.2em]">© 2026 LE GRAND ART • PROPORTION & EXCELLENCE • TOUS DROITS RÉSERVÉS.</p>
-                    <div class="flex gap-8 text-[10px] font-black uppercase tracking-widest text-zinc-700">
-                        <a href="#" class="hover:text-white transition">Confidentialité</a>
-                        <a href="#" class="hover:text-white transition">Cookies</a>
-                        <a href="#" class="hover:text-white transition">Mentions Légales</a>
-                    </div>
-                </div>
+        <section class="px-10 md:px-20 pb-20">
+            <h3 class="text-xs font-black text-zinc-500 uppercase tracking-[0.3em] mb-10">Catalogue en direct</h3>
+            <div id="movie-grid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Chargé dynamiquement -->
             </div>
-        </footer>
+        </section>
     </main>
 
-    <!-- MODALE PROFIL -->
-    <div id="profile-modal" class="fixed inset-0 z-[110] bg-black/95 backdrop-blur-3xl hidden flex items-center justify-center p-6">
-        <div class="bg-zinc-950 border border-white/10 w-full max-w-xl rounded-[3.5rem] p-12 md:p-16 relative overflow-hidden shadow-[0_0_100px_rgba(0,0,0,1)]" data-aos="zoom-in">
-            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
-            <button id="close-profile" class="absolute top-10 right-10 w-12 h-12 rounded-2xl bg-white/5 hover:bg-white/10 transition flex items-center justify-center"><i data-feather="x"></i></button>
-            
-            <h2 class="text-4xl font-black mb-2 text-center uppercase tracking-tighter italic">Gestion du <span class="text-yellow-500 font-normal">Profil</span></h2>
-            <p class="text-center text-zinc-500 text-[10px] uppercase tracking-[0.3em] font-bold mb-12 italic">Personnalisez votre identité numérique</p>
-            
-            <form id="profile-form" class="space-y-8">
-                <!-- Avatar Modification -->
-                <div class="flex flex-col items-center mb-10">
-                    <div class="relative group">
-                        <div class="w-32 h-32 rounded-[2.5rem] overflow-hidden border-4 border-yellow-500 p-1 shadow-2xl shadow-yellow-500/10 transition-transform group-hover:scale-105 duration-500">
-                            <img id="profile-preview" src="https://ui-avatars.com/api/?name=User&background=eab308&color=000&bold=true" class="w-full h-full object-cover rounded-[2rem]">
-                        </div>
-                        <label for="photo-input" class="absolute -bottom-2 -right-2 w-12 h-12 bg-white text-black rounded-2xl flex items-center justify-center cursor-pointer hover:bg-yellow-500 transition-colors shadow-xl">
-                            <i data-feather="camera" class="w-5 h-5"></i>
-                        </label>
-                        <input type="file" id="photo-input" class="hidden" accept="image/*">
-                    </div>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="space-y-3">
-                        <label class="text-[10px] uppercase text-zinc-500 font-black ml-2 tracking-widest">Nom & Prénom</label>
-                        <input type="text" id="edit-name" placeholder="Votre nom" class="input-premium w-full rounded-2xl px-6 py-5 outline-none font-bold text-lg">
-                    </div>
-                    <div class="space-y-3">
-                        <label class="text-[10px] uppercase text-zinc-500 font-black ml-2 tracking-widest">Nouveau Code (Optionnel)</label>
-                        <input type="password" id="edit-pass" placeholder="••••••••" class="input-premium w-full rounded-2xl px-6 py-5 outline-none font-bold">
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full bg-yellow-500 text-black font-black py-6 rounded-2xl transition hover:bg-yellow-400 uppercase tracking-[0.2em] text-sm shadow-2xl shadow-yellow-500/20">
-                    Valider & Envoyer à l'Admin
-                </button>
-                
-                <div class="flex items-center justify-center gap-2 text-zinc-600">
-                    <i data-feather="lock" class="w-3 h-3"></i>
-                    <p class="text-[9px] font-black uppercase tracking-widest">Synchronisation sécurisée vers +243978415814</p>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            feather.replace();
-            AOS.init();
+        // --- CONFIGURATION DES APIS (LIENS MIS À JOUR) ---
+        const API_MOVIES = "https://sheetdb.io/api/v1/zei5yp54oyfzt"; 
+        const API_USERS = "https://sheetdb.io/api/v1/70uu12wdv0cxx";  
 
-            // Initialisation Vanta (Fond de connexion)
-            let vantaLogin = VANTA.GLOBE({
-                el: "#vanta-bg",
-                mouseControls: true,
-                touchControls: true,
-                gyroControls: false,
-                minHeight: 200.00,
-                minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-                color: 0xeab308,
-                backgroundColor: 0x0,
-                size: 0.80
-            });
+        let MOVIE_DATABASE = [];
 
-            const portal = document.getElementById('login-portal');
-            const portalForm = document.getElementById('portal-form');
-            const mainApp = document.getElementById('main-app');
+        // Initialisation UI
+        AOS.init();
+        feather.replace();
+        VANTA.GLOBE({ el: "#vanta-bg", color: 0xeab308, backgroundColor: 0x030303 });
 
-            // Soumission Login
-            portalForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                portal.style.transform = "scale(0.9)";
-                portal.style.opacity = "0";
-                
-                setTimeout(() => {
-                    portal.style.display = "none";
-                    mainApp.style.display = "block";
-                    document.body.style.overflowY = "auto";
-                    setTimeout(() => { 
-                        mainApp.style.opacity = "1";
-                        // Vanta Hero Init
-                        VANTA.GLOBE({
-                            el: "#hero-vanta",
-                            mouseControls: true,
-                            touchControls: true,
-                            scale: 1.00,
-                            color: 0xeab308,
-                            backgroundColor: 0x0,
-                            size: 0.60
-                        });
-                    }, 50);
-                }, 800);
-            });
+        // --- CHARGEMENT DES FILMS DEPUIS GOOGLE SHEETS ---
+        async function fetchMoviesFromSheet() {
+            try {
+                const response = await fetch(API_MOVIES);
+                const data = await response.json();
+                MOVIE_DATABASE = data;
+                return data;
+            } catch (err) {
+                console.error("Erreur chargement films:", err);
+                return [];
+            }
+        }
 
-            // RECHERCHE
-            const searchOverlay = document.getElementById('search-overlay');
-            const triggerSearch = document.getElementById('trigger-search');
-            const closeSearch = document.getElementById('close-search');
-            const searchInput = document.getElementById('search-input');
-            const searchResults = document.getElementById('search-results');
-            const movieCards = document.querySelectorAll('.movie-card');
+        function createMovieCard(m) {
+            return `
+                <div class="movie-card" data-aos="fade-up">
+                    <img src="${m.img || 'https://via.placeholder.com/400x600?text=Affiche+Non+Disponible'}" class="w-full h-72 object-cover opacity-80">
+                    <div class="p-6">
+                        <span class="text-yellow-500 text-[10px] font-bold uppercase">${m.genre || 'Cinéma'} • ${m.year || '2024'}</span>
+                        <h4 class="text-lg font-black uppercase mt-1 mb-4">${m.title || 'Sans titre'}</h4>
+                        <a href="${m.link || '#'}" target="_blank" class="block text-center border border-white/10 hover:border-yellow-500 py-3 rounded-xl text-[10px] font-bold uppercase transition-all">Visionner</a>
+                    </div>
+                </div>`;
+        }
 
-            triggerSearch.onclick = () => {
-                searchOverlay.classList.add('active');
-                searchInput.focus();
-                document.body.style.overflow = "hidden";
-            };
+        // --- CONNEXION ---
+        document.getElementById('portal-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('user-input').value;
+            const passInput = document.getElementById('pass-input').value;
+            const btn = document.getElementById('login-btn');
 
-            closeSearch.onclick = () => {
-                searchOverlay.classList.remove('active');
-                document.body.style.overflowY = "auto";
-            };
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Vérification...';
 
-            searchInput.oninput = (e) => {
-                const term = e.target.value.toLowerCase();
-                searchResults.innerHTML = "";
-                
-                if (term.length > 1) {
-                    movieCards.forEach(card => {
-                        const title = card.getAttribute('data-title');
-                        if (title && title.includes(term)) {
-                            const clone = card.cloneNode(true);
-                            clone.classList.remove('movie-card');
-                            clone.classList.add('animate-pulse');
-                            searchResults.appendChild(clone);
-                        }
-                    });
-                }
-            };
+            try {
+                // Recherche de l'utilisateur dans le Google Sheet
+                const res = await fetch(`${API_USERS}/search?email=${emailInput}&cle_acces=${passInput}`);
+                const user = await res.json();
 
-            // FILTRES CATEGORIES
-            const catBtns = document.querySelectorAll('.category-btn');
-            catBtns.forEach(btn => {
-                btn.onclick = () => {
-                    catBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
+                if(user && user.length > 0) {
+                    const movies = await fetchMoviesFromSheet();
+                    const grid = document.getElementById('movie-grid');
                     
-                    const filter = btn.getAttribute('data-filter');
-                    movieCards.forEach(card => {
-                        if (filter === 'tout' || card.getAttribute('data-cat') === filter) {
-                            card.style.display = "block";
-                        } else {
-                            card.style.display = "none";
-                        }
-                    });
-                };
-            });
-
-            // PROFIL
-            const profileBtn = document.getElementById('profile-btn');
-            const profileModal = document.getElementById('profile-modal');
-            const closeProfile = document.getElementById('close-profile');
-            const photoInput = document.getElementById('photo-input');
-            const profilePreview = document.getElementById('profile-preview');
-            const profileForm = document.getElementById('profile-form');
-
-            profileBtn.onclick = () => {
-                profileModal.classList.remove('hidden');
-                document.body.style.overflow = "hidden";
-            };
-
-            closeProfile.onclick = () => {
-                profileModal.classList.add('hidden');
-                document.body.style.overflowY = "auto";
-            };
-
-            photoInput.onchange = (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => profilePreview.src = ev.target.result;
-                    reader.readAsDataURL(e.target.files[0]);
+                    grid.innerHTML = movies.length > 0 
+                        ? movies.map(m => createMovieCard(m)).join('')
+                        : `<p class="col-span-full text-center text-zinc-500 py-20">Votre catalogue Google Sheets semble vide.</p>`;
+                    
+                    // Transition vers l'application
+                    document.getElementById('login-portal').style.opacity = "0";
+                    setTimeout(() => {
+                        document.getElementById('login-portal').style.display = "none";
+                        document.getElementById('main-app').style.display = "block";
+                        setTimeout(() => document.getElementById('main-app').style.opacity = "1", 50);
+                        document.getElementById('nav-name').innerText = user[0].nom || emailInput.split('@')[0];
+                        document.body.style.overflowY = "auto";
+                    }, 500);
+                } else {
+                    btn.innerHTML = "Identifiants incorrects";
+                    btn.classList.add('bg-red-500');
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.innerHTML = "Initialiser la session";
+                        btn.classList.remove('bg-red-500');
+                    }, 2000);
                 }
+            } catch (err) {
+                console.error("Erreur API:", err);
+                btn.disabled = false;
+                btn.innerHTML = "Erreur de connexion";
+            }
+        };
+
+        // --- INSCRIPTION ---
+        document.getElementById('open-signup').onclick = () => document.getElementById('signup-modal').classList.remove('hidden');
+        document.getElementById('close-signup-overlay').onclick = () => document.getElementById('signup-modal').classList.add('hidden');
+
+        document.getElementById('signup-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('signup-submit');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Enregistrement en cours...";
+
+            const newUser = {
+                nom: document.getElementById('reg-name').value,
+                email: document.getElementById('reg-email').value,
+                cle_acces: document.getElementById('reg-pass').value,
+                date_inscription: new Date().toLocaleDateString(),
+                status: "actif"
             };
 
-            profileForm.onsubmit = (e) => {
-                e.preventDefault();
-                const name = document.getElementById('edit-name').value || "Utilisateur";
-                const pass = document.getElementById('edit-pass').value || "Inchangé";
-                
-                // Update UI
-                document.getElementById('nav-name').innerText = name;
-                document.getElementById('nav-avatar').src = profilePreview.src;
+            try {
+                await fetch(API_USERS, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: [newUser] })
+                });
+                document.getElementById('signup-success').classList.remove('hidden');
+            } catch (err) {
+                console.error("Erreur inscription:", err);
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Erreur - Réessayer";
+            }
+        };
 
-                // WhatsApp Integration
-                const phone = "243978415814";
-                const message = `✨ *MODIFICATION PROFIL LE GRAND ART*%0A━━━━━━━━━━━━━━━━━━━━━%0A👤 *Identité :* ${name}%0A🔑 *Clé Privée :* ${pass}%0A🖼️ *Avatar :* Mis à jour%0A⏰ *Heure :* ${new Date().toLocaleTimeString()}%0A━━━━━━━━━━━━━━━━━━━━━%0A_Veuillez confirmer cette modification._`;
-                
-                window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
-                
-                profileModal.classList.add('hidden');
-                document.body.style.overflowY = "auto";
-            };
-        });
+        // Recherche en temps réel
+        document.getElementById('trigger-search').onclick = () => document.getElementById('search-overlay').classList.add('active');
+        document.getElementById('close-search').onclick = () => document.getElementById('search-overlay').classList.remove('active');
+        document.getElementById('search-input').oninput = (e) => {
+            const q = e.target.value.toLowerCase();
+            const filtered = MOVIE_DATABASE.filter(m => 
+                (m.title && m.title.toLowerCase().includes(q)) || 
+                (m.genre && m.genre.toLowerCase().includes(q))
+            );
+            document.getElementById('search-results').innerHTML = filtered.map(m => createMovieCard(m)).join('');
+        };
     </script>
 </body>
 </html>
