@@ -148,7 +148,7 @@
             
             <div class="flex items-center">
                 <!-- ICÔNE CONNEXION PREMIUM -->
-                <a href="connexion.html" class="premium-icon-btn flex items-center gap-3 px-6 py-3.5 rounded-xl group relative text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-yellow-500 border-2 border-yellow-500/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition-all shadow-[0_0_20px_rgba(234,179,8,0.15)]">
+                <a href="connexion.html" id="login-link" class="premium-icon-btn flex items-center gap-3 px-4 py-2.5 rounded-xl group relative text-xs md:text-sm font-black uppercase tracking-widest text-yellow-500 border-2 border-yellow-500/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition-all shadow-[0_0_20px_rgba(234,179,8,0.15)]">
                     <i data-feather="user" class="w-4 h-4"></i>
                     <span id="login-text">Connexion</span>
                     <span class="absolute -top-1.5 -right-1.5 flex h-3 w-3">
@@ -707,10 +707,10 @@
         // Updated artsCategories for consistent IDs and names
         const artsCategories = [
             { id: "cinema", name: "Cinéma", display: "1. Cinéma", color: "bg-yellow-500", illustration: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800" },
-            { id: "architecture", name: "Architecture", display: "2. Architecture", color: "bg-orange-500", illustration: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&q=80&w=800" },
-            { id: "sculpture", name: "Sculpture", display: "3. Sculpture", color: "bg-stone-500", illustration: "https://images.unsplash.com/photo-1554188248-986adbb73be4?auto=format&fit=crop&q=80&w=800" },
-            { id: "arts-plastiques", name: "Arts-Plastiques", display: "4. Arts-Plastiques", color: "bg-blue-500", illustration: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800" },
-            { id: "musique", name: "Musique", display: "5. Musique", color: "bg-emerald-500", illustration: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800" },
+            { id: "musique", name: "Musique", display: "2. Musique", color: "bg-emerald-500", illustration: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800" },
+            { id: "architecture", name: "Architecture", display: "3. Architecture", color: "bg-orange-500", illustration: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&q=80&w=800" },
+            { id: "sculpture", name: "Sculpture", display: "4. Sculpture", color: "bg-stone-500", illustration: "https://images.unsplash.com/photo-1554188248-986adbb73be4?auto=format&fit=crop&q=80&w=800" },
+            { id: "arts-plastiques", name: "Arts-Plastiques", display: "5. Arts-Plastiques", color: "bg-blue-500", illustration: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800" },
             { id: "litterature", name: "Littérature", display: "6. Littérature", color: "bg-red-500", illustration: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=800" },
             { id: "arts-de-la-scene", name: "Arts de la scène", display: "7. Arts de la scène", color: "bg-purple-500", illustration: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&q=80&w=800" },
         ];
@@ -721,6 +721,23 @@
         }
 
         window.onload = () => {
+            // Check session
+            const sessionUser = localStorage.getItem('lg_user_name');
+            if (sessionUser) {
+                const loginText = document.getElementById('login-text');
+                if (loginText) loginText.innerText = "Déconnexion";
+                
+                const loginLink = document.getElementById('login-link');
+                if (loginLink) {
+                    loginLink.href = "#";
+                    loginLink.onclick = (e) => { e.preventDefault(); logout(); };
+                    const icon = loginLink.querySelector('i');
+                    if (icon) icon.setAttribute('data-feather', 'log-out');
+                    loginLink.classList.add('border-emerald-500/50', 'text-emerald-500');
+                }
+                feather.replace();
+            }
+
             const container = document.getElementById('streaming-content-container');
             container.innerHTML = artsCategories.map(cat => `
                 <section>
@@ -772,6 +789,11 @@
             if(nav && window.scrollY > 100) nav.classList.add('scrolled');
             else if (nav) nav.classList.remove('scrolled');
         });
+
+        function logout() {
+            localStorage.removeItem('lg_user_name');
+            location.reload();
+        }
     </script>
 </body>
 </html>
