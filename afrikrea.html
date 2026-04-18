@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boutique AfriKrea - LeGrandArt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #040404; color: #f8fafc; }
+        .glass-card { background: rgba(10, 10, 11, 0.75); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(18px); }
+    </style>
+</head>
+<body class="min-h-screen bg-[#050505]">
+    <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-[1400px] mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-6 py-5">
+            <a href="connexion.html" class="flex flex-col leading-none no-underline">
+                <span class="text-3xl font-black text-white">LeGrand<span class="text-yellow-400">Art</span></span>
+                <span class="text-[10px] uppercase tracking-[0.4em] text-emerald-400 font-black mt-1">Boutique AfriKrea</span>
+            </a>
+            <nav class="flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-[0.25em] font-black text-gray-300">
+                <a href="business.html" class="hover:text-yellow-400 transition">Business</a>
+                <a href="connexion.html" class="text-yellow-400 hover:text-white transition">Accès</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-[1400px] mx-auto px-4 md:px-6 py-12 space-y-20">
+        <section class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] items-start">
+            <div class="space-y-8">
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-emerald-500/15 text-emerald-300 uppercase tracking-[0.3em] font-black text-[10px]">Boutique AfriKrea</div>
+                <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-tight">Artisanat contemporain, bijoux et décorations faits main</h1>
+                <p class="max-w-3xl text-gray-300 leading-relaxed text-lg">Découvrez notre collection unique d'artisanat panafricain, alliant tradition et modernité pour des pièces uniques et authentiques.</p>
+                <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800" alt="Bijoux artisanaux AfriKrea" class="w-full h-80 object-cover rounded-[2.5rem] border border-white/10">
+                <div class="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.25em] text-emerald-300 font-black">
+                    <span class="bg-white/5 rounded-full px-3 py-2">Livraison internationale</span>
+                    <span class="bg-white/5 rounded-full px-3 py-2">Paiement mobile</span>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <h2 class="text-3xl font-black text-white uppercase tracking-tighter">Notre <span class="text-yellow-400">Collection</span></h2>
+                
+                <div class="grid gap-4">
+                    <!-- Produit 1 -->
+                    <div class="glass-card p-6 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                            <h3 class="text-lg font-black text-white">Collier Massaï Authentique</h3>
+                            <p class="text-gray-400 text-xs">Fait main avec des perles traditionnelles du Kenya.</p>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <span class="text-yellow-400 font-black">45$</span>
+                            <button onclick="buyProduct('AfriKrea', 'Collier Massaï Authentique', '45$')" class="bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase text-[10px] px-6 py-3 rounded-xl transition">Acheter</button>
+                        </div>
+                    </div>
+                    <!-- Produit 2 -->
+                    <div class="glass-card p-6 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                            <h3 class="text-lg font-black text-white">Statuette Bronze Bénin</h3>
+                            <p class="text-gray-400 text-xs">Sculpture artisanale coulée à la cire perdue.</p>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <span class="text-yellow-400 font-black">120$</span>
+                            <button onclick="buyProduct('AfriKrea', 'Statuette Bronze Bénin', '120$')" class="bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase text-[10px] px-6 py-3 rounded-xl transition">Acheter</button>
+                        </div>
+                    </div>
+                    <!-- Produit 3 -->
+                    <div class="glass-card p-6 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>
+                            <h3 class="text-lg font-black text-white">Tissage Bogolan Traditionnel</h3>
+                            <p class="text-gray-400 text-xs">Tissu malien teint aux pigments naturels.</p>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <span class="text-yellow-400 font-black">75$</span>
+                            <button onclick="buyProduct('AfriKrea', 'Tissage Bogolan Traditionnel', '75$')" class="bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase text-[10px] px-6 py-3 rounded-xl transition">Acheter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/10 py-10 text-center text-gray-400 text-sm">
+        <p class="max-w-3xl mx-auto">LeGrandArt - Plateforme de valorisation des arts et métiers.</p>
+    </footer>
+
+    <script>
+        // Check authentication
+        if (!localStorage.getItem('lg_user_name')) {
+            window.location.href = 'connexion.html';
+        }
+
+        function buyProduct(shop, product, price) {
+            const message = `Bonjour, je souhaite acheter le produit suivant chez ${shop} :\n\n- Produit : ${product}\n- Prix : ${price}\n\nMerci de me donner la marche à suivre.`;
+            window.open(`https://wa.me/243815022325?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
