@@ -132,17 +132,43 @@
         }
 
         /* Styles du Portail Premium */
-        .premium-glass {
-            background: rgba(10, 10, 10, 0.4);
-            backdrop-filter: blur(50px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9);
-        }
         @keyframes subtle-float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
         }
         .portal-float { animation: subtle-float 8s ease-in-out infinite; }
+
+        :root {
+            --primary: #eab308;
+            --dark: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        .glass-card-auth {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 3rem;
+        }
+        .input-field-auth {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s;
+        }
+        .input-field-auth:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
+            outline: none;
+        }
+        .loader-auth {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
         #login-portal { transition: all 1s ease; }
     </style>
 </head>
@@ -507,25 +533,39 @@
     <div id="login-portal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black overflow-hidden">
         <div id="vanta-bg" class="absolute inset-0 z-0 opacity-40"></div>
         
-        <div class="w-full max-w-lg p-12 md:p-16 rounded-[4rem] z-10 relative premium-glass portal-float" data-aos="fade-up" data-aos-duration="1500">
+        <div class="w-full max-w-lg p-10 md:p-14 z-10 relative glass-card-auth portal-float" data-aos="fade-up" data-aos-duration="1500">
             <div class="text-center mb-12">
                 <div class="inline-flex items-center gap-2 px-5 py-2 border border-yellow-500/30 rounded-full mb-8 bg-yellow-500/5">
                     <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></div>
-                    <span class="text-yellow-500 text-[9px] uppercase tracking-[0.5em] font-black">Accès Sécurisé</span>
+                    <span class="text-yellow-500 text-[9px] uppercase tracking-[0.5em] font-black">Passerelle GCP Sécurisée</span>
                 </div>
                 <h1 class="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-4 italic text-white">
                     Le Grand <span class="text-yellow-500">Art</span>
                 </h1>
-                <p class="text-zinc-500 text-[10px] uppercase tracking-[0.4em] font-bold leading-relaxed">Veuillez vous identifier pour accéder au contenu</p>
+                <p class="text-zinc-500 text-[10px] uppercase tracking-[0.4em] font-bold leading-relaxed">Authentification requise</p>
             </div>
 
-            <form id="portal-form" class="space-y-8">
+            <div id="authTabs" class="flex gap-4 mb-8 border-b border-white/5">
+                <button onclick="toggleAuthMode('login')" id="loginTabBtn" class="flex-1 pb-4 border-b-2 border-yellow-500 text-white font-black text-[10px] uppercase tracking-widest transition-all">Connexion</button>
+                <button onclick="toggleAuthMode('signup')" id="signupTabBtn" class="flex-1 pb-4 border-b-2 border-transparent text-gray-500 font-black text-[10px] uppercase tracking-widest transition-all">Inscription</button>
+            </div>
+
+            <form id="authForm" class="space-y-6">
+                <div id="nameGroup" class="hidden animate-fade-in">
+                    <label class="text-[9px] uppercase tracking-[0.3em] text-zinc-600 font-black ml-1 mb-3 block group-focus-within:text-yellow-500">Nom d'Artiste</label>
+                    <div class="relative">
+                        <i data-feather="user" class="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-700"></i>
+                        <input type="text" id="auth-name" placeholder="Nom ou Pseudonyme" 
+                            class="w-full input-field-auth rounded-2xl pl-14 pr-6 py-5 text-sm text-white">
+                    </div>
+                </div>
+
                 <div class="group">
-                    <label class="text-[9px] uppercase tracking-[0.3em] text-zinc-600 font-black ml-1 mb-3 block group-focus-within:text-yellow-500">Identifiant</label>
+                    <label class="text-[9px] uppercase tracking-[0.3em] text-zinc-600 font-black ml-1 mb-3 block group-focus-within:text-yellow-500">Email</label>
                     <div class="relative">
                         <i data-feather="mail" class="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-700"></i>
-                        <input type="email" id="user-input" required placeholder="votre@email.com" 
-                            class="w-full bg-black/50 border border-white/5 rounded-2xl pl-14 pr-6 py-5 outline-none focus:border-yellow-500/40 text-sm text-white">
+                        <input type="email" id="auth-email" required placeholder="art@domaine.com" 
+                            class="w-full input-field-auth rounded-2xl pl-14 pr-6 py-5 text-sm text-white">
                     </div>
                 </div>
                 
@@ -533,50 +573,90 @@
                     <label class="text-[9px] uppercase tracking-[0.3em] text-zinc-600 font-black ml-1 mb-3 block group-focus-within:text-yellow-500">Clé d'Accès</label>
                     <div class="relative">
                         <i data-feather="lock" class="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-700"></i>
-                        <input type="password" id="pass-input" required placeholder="••••••••" 
-                            class="w-full bg-black/50 border border-white/5 rounded-2xl pl-14 pr-6 py-5 outline-none focus:border-yellow-500/40 text-sm text-white">
+                        <input type="password" id="auth-pass" required placeholder="••••••••" 
+                            class="w-full input-field-auth rounded-2xl pl-14 pr-6 py-5 text-sm text-white">
                     </div>
                 </div>
 
-                <button type="submit" id="login-btn" class="w-full bg-yellow-500 text-black font-black py-4 rounded-xl uppercase tracking-widest text-sm shadow-2xl mt-4 hover:bg-white transition-all">
-                    Débloquer l'Accès
+                <div id="authStatus" class="text-[10px] py-3 px-4 rounded-xl hidden font-bold text-center uppercase tracking-wider"></div>
+
+                <button type="submit" id="authSubmitBtn" class="w-full bg-yellow-500 text-black font-black py-5 rounded-2xl uppercase tracking-[0.2em] text-xs shadow-2xl mt-4 hover:bg-white transition-all flex items-center justify-center gap-3">
+                    <span id="authBtnText">DÉBLOQUER L'ACCÈS</span>
+                    <div class="loader-auth" id="authLoader"></div>
                 </button>
             </form>
-
-            <div class="mt-14 flex items-center justify-center gap-6">
-                <button onclick="toggleModal('contract-modal')" class="text-zinc-500 text-[9px] uppercase font-bold tracking-[0.3em] hover:text-white transition-colors">Devenir Artiste</button>
-            </div>
         </div>
     </div>
 
     <script>
         const WHATSAPP_PHONE = "243815022325";
-        const API_USERS = "https://sheetdb.io/api/v1/iammxsa2c5p5v";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7xZ_zf2IPfM96HsoiP3JVGtFyBEWw1iGgDOavlacJ92MUUgZOWdBCFNSRwOExbeoX/exec";
         let vantaEffect;
+        let authMode = 'login';
 
-        // Logique de la Passerelle (Login)
-        document.getElementById('portal-form').onsubmit = async (e) => {
+        function toggleAuthMode(mode) {
+            authMode = mode;
+            const isLogin = mode === 'login';
+            document.getElementById('nameGroup').classList.toggle('hidden', isLogin);
+            document.getElementById('loginTabBtn').className = isLogin ? "flex-1 pb-4 border-b-2 border-yellow-500 text-white font-black text-[10px] uppercase tracking-widest transition-all" : "flex-1 pb-4 border-b-2 border-transparent text-gray-500 font-black text-[10px] uppercase tracking-widest transition-all";
+            document.getElementById('signupTabBtn').className = !isLogin ? "flex-1 pb-4 border-b-2 border-yellow-500 text-white font-black text-[10px] uppercase tracking-widest transition-all" : "flex-1 pb-4 border-b-2 border-transparent text-gray-500 font-black text-[10px] uppercase tracking-widest transition-all";
+            document.getElementById('authBtnText').innerText = isLogin ? "DÉBLOQUER L'ACCÈS" : "REJOINDRE LE COLLECTIF";
+            document.getElementById('authStatus').classList.add('hidden');
+        }
+
+        document.getElementById('authForm').onsubmit = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('login-btn');
-            btn.innerHTML = '<span class="animate-pulse">VÉRIFICATION...</span>';
+            const btn = document.getElementById('authSubmitBtn');
+            const loader = document.getElementById('authLoader');
+            const btnText = document.getElementById('authBtnText');
+            const status = document.getElementById('authStatus');
+            
+            const payload = {
+                action: authMode,
+                email: document.getElementById('auth-email').value,
+                password: document.getElementById('auth-pass').value,
+                name: document.getElementById('auth-name').value || "Artiste"
+            };
+
+            btn.disabled = true;
+            loader.style.display = 'block';
+            btnText.style.opacity = '0.5';
+            status.classList.add('hidden');
             
             try {
-                const res = await fetch(`${API_USERS}/search?email=${document.getElementById('user-input').value}&cle_acces=${document.getElementById('pass-input').value}`);
-                const user = await res.json();
-                
-                if(user && user.length > 0) {
-                    localStorage.setItem('lg_user_name', user[0].nom);
-                    location.reload(); // Rafraîchit pour débloquer le site
+                const res = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await res.json();
+
+                if (result.status === "success") {
+                    if(authMode === 'signup') {
+                        showAuthStatus("Compte créé ! Connectez-vous.", "bg-yellow-500/20 text-yellow-500 border border-yellow-500/30");
+                        toggleAuthMode('login');
+                    } else {
+                        localStorage.setItem('lg_user_name', result.user.name);
+                        location.reload();
+                    }
                 } else {
-                    btn.innerText = "ACCÈS REFUSÉ";
-                    btn.classList.add('bg-red-500', 'text-white');
-                    setTimeout(() => {
-                        btn.innerText = "DÉBLOQUER L'ACCÈS";
-                        btn.classList.remove('bg-red-500', 'text-white');
-                    }, 2000);
+                    showAuthStatus(result.message || "Accès refusé", "bg-red-500/20 text-red-400 border border-red-500/30");
                 }
-            } catch(e) { alert("Erreur de connexion"); }
+            } catch(err) { 
+                showAuthStatus("Erreur de communication GCP", "bg-orange-500/20 text-orange-400 border border-orange-500/30");
+            } finally {
+                btn.disabled = false;
+                loader.style.display = 'none';
+                btnText.style.opacity = '1';
+            }
         };
+
+        function showAuthStatus(msg, classes) {
+            const status = document.getElementById('authStatus');
+            status.innerText = msg;
+            status.className = `text-[10px] py-3 px-4 rounded-xl font-bold text-center uppercase tracking-wider ${classes}`;
+            status.classList.remove('hidden');
+        }
 
         let currentAd = 0;
         let isDragging = false;
